@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loginbackground">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/business_bg" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="130dp"
+            android:background="@color/trans">
+            <RelativeLayout
+                android:id="@+id/info_lay"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginTop="35dp"
+                android:background="@color/white"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/owner_nameTV"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="Antu Patidar"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/post_timeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:hint="Ad posted at 12:30 PM"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/business_name_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:text="@string/business_company_name"
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="17sp"/>
+                <TextView
+                    android:id="@+id/businessnameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/post_timeTV"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="37dp"
+                    android:layout_toRightOf="@id/business_name_header"
+                    android:text="Xchange The World"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:id="@+id/website_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/businessnameTV"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/website"
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/websiteTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/businessnameTV"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toRightOf="@id/website_header"
+                    android:text="www.xchange.world"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+
+
+                <TextView
+                    android:id="@+id/category_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/website_header"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/category"
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/categoryTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/websiteTV"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_toRightOf="@id/category_header"
+                    android:text="Account &amp; FInance"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+
+
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/contact_lay"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@id/info_lay"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="18dp"
+                    android:text="Contact BY"
+                    android:textAllCaps="true"
+                    android:textColor="@color/action_bar_colour"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/call_new" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imageview5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/msg_new" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/chat_new" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/video_new" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/content_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contact_lay"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_the_business"
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="Loren ipsum is the best way Loren Ipsum is the best way Loren ipsum is the best way Loren Ipsum is the best way Loren ipsum is the best way Loren Ipsum is the best way "
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Description of Service : "
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="Loren ipsum is the best way Loren Ipsum is the best way Loren ipsum is the best way Loren Ipsum is the best way Loren ipsum is the best way Loren Ipsum is the best way "
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Social Media Link : "
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="15sp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:backgroundTint="@null"
+                    android:ellipsize="end"
+                    android:imeOptions="actionDone"
+                    android:maxLines="3"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/recycle_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_lay"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="Hours Of Operation : "
+                    android:textColor="@color/action_bar_colour" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="40dp"
+                    android:paddingLeft="8dp">
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/SpinnerWeekName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_style"
+                        android:entries="@array/WeekdayName"
+                        app:layout_constraintLeft_toLeftOf="parent">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/SpinnerAM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_style"
+                        android:entries="@array/Time_in_Am"
+                        app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName"
+                        app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/edit_text_style"
+                        android:entries="@array/Time_in_Am"
+                        app:layout_constraintLeft_toRightOf="@+id/SpinnerAM"
+                        app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="SEE ALL PHOTOS"
+                    android:textColor="@color/action_bar_colour" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_vdo"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:text="SEE ALL VIDEOS"
+                    android:textColor="@color/action_bar_colour" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/review_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recycle_lay"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/customer_review_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/customer_reviews"
+                    android:textColor="@color/DarkBlue"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/review_btn"
+                    android:layout_width="75dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/blue_btn"
+                    android:text="@string/review"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/rating_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/customer_review_header"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@+id/ratingBar"
+                    android:text="4.1 reviews"
+                    android:textSize="9dp" />
+
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/customer_review_header"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="20dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:stepSize="1.0"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/loc_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/review_lay"
+                android:layout_marginTop="8dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/White"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:id="@+id/locationtextLay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:id="@+id/LocationPointerImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/location_pointer" />
+
+                        <TextView
+                            android:id="@+id/TextViewMyLocationSet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Map and Address"
+                            android:textColor="@color/action_bar_colour"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/TextViewLocationEdit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="end"
+                            android:text="Edit"
+                            android:textColor="@color/action_bar_colour" />
+
+                    </LinearLayout>
+                    <fragment
+                        android:id="@+id/map"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_below="@id/locationtextLay" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_below="@+id/map">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/location_pointer"
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/locationName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:padding="5dp"
+                            android:textColorHint="@color/black" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="80dp"
+                android:layout_height="90dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/profile" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
