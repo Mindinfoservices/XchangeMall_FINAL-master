@@ -35,10 +35,10 @@ public class Postyour2Add extends BaseActivity implements View.OnClickListener, 
     String  id;
     ArrayList<String> postarr;
     ArrayList<String> imageSet;
-    private ImageView cross_imageView;
+    public static ImageView cross_imageView;
     //next_btn
     private Button next_btn;
-    private TextView pageNo_textView;
+    public static TextView pageNo_textView;
     //Fragment Manager
     private FragmentManager fm;
     private ImageButton back_arrowImage;
@@ -159,38 +159,24 @@ public class Postyour2Add extends BaseActivity implements View.OnClickListener, 
             case R.id.servicesImageView:
                 Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
 
-//                ImageType_str = "1";
-//                opnenext("101");
                 break;
 
             case R.id.ShowcaseImageView:
                 Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
 
-//                ImageType_str = "5";
-//                fragment = new Postyour3Add();
-//                opnenext(ImageType_str);
                 break;
 
             case R.id.personalImageView:
                 Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
 
-//                ImageType_str = "0";
-//                fragment = new Postyour3Add();
-//                opnenext(ImageType_str);
                 break;
 
             case R.id.CommImageView:
                 Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
 
-//                ImageType_str = "6";
-//                fragment = new Postyour3Add();
-//                opnenext(ImageType_str);
                 break;
 
             case R.id.houseRentalImageView:
-//               Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
-
-//               fragment = new PostyourHouse();
                 opnenext("102");
                 break;
 
@@ -213,7 +199,7 @@ public class Postyour2Add extends BaseActivity implements View.OnClickListener, 
     }
 
     private void OpenMainActivity() {
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(Postyour2Add.this, MainActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
@@ -257,7 +243,7 @@ public class Postyour2Add extends BaseActivity implements View.OnClickListener, 
                 bundle.putStringArrayList("imageSet", imageSet);
                 fragment.setArguments(bundle);
 
-                fm.beginTransaction().replace(R.id.allCategeries, fragment).addToBackStack(null)
+                fm.beginTransaction().replace(R.id.allCategeriesIN, fragment).addToBackStack(null)
                         .setCustomAnimations(R.anim.fragment_slide_right_enter, R.anim.fragment_slide_left_exit)
                         //.setCustomAnimations(R.animator.fragment_slide_left_enter,R.animator.fragment_slide_right_exit)
                         .commit();

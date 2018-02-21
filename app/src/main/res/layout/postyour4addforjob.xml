@@ -9,36 +9,6 @@
     android:focusable="true"
     android:orientation="vertical">
 
-
-    <!--Image slider layout-->
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-    <include
-        layout="@layout/postyouaddheader"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/image_lay"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/toolbar"
-        android:background="@color/black"
-        >
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            custom:auto_cycle="true"
-            custom:indicator_visibility="visible"
-            custom:pager_animation="Accordion"
-            custom:pager_animation_span="1100" />
-
-    </LinearLayout>
-
-
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -191,7 +161,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Jobs Description:"
-                    android:singleLine="true"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
                     android:textSize="15sp" />

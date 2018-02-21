@@ -29,15 +29,19 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+
     <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/scrollLay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/scrollLay">
+        >
+
+
         <com.baoyz.widget.PullRefreshLayout
             android:id="@+id/refreshLay"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         <ListView
             android:id="@+id/recyclerViewItem"
             android:layout_width="match_parent"
@@ -50,16 +54,14 @@
             android:splitMotionEvents="false"
             android:visibility="visible" />
         </com.baoyz.widget.PullRefreshLayout>
-
         <TextView
             android:id="@+id/noPostTv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:fontFamily="sans-serif-condensed"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:text="No Posts Available"
             android:textColor="@color/white"
             android:textSize="15sp"
@@ -146,8 +148,9 @@
 
             </TextView>
         </LinearLayout>
-    </RelativeLayout>
 
+
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progressbar"

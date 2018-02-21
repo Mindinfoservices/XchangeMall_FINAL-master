@@ -80,13 +80,13 @@
                     <LinearLayout
                         android:id="@+id/name_lay"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:background="@color/white"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="bottom|left"
@@ -101,7 +101,6 @@
                                 android:layout_marginLeft="10dp"
                                 android:text="Name"
                                 android:textColor="@color/black" />
-
                             <TextView
                                 android:id="@+id/posted_timeTV"
                                 android:layout_width="wrap_content"
@@ -116,7 +115,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="vertical">
@@ -201,7 +200,7 @@
                                     android:layout_height="25dp"
                                     android:layout_gravity="center"
                                     android:layout_marginRight="10dp"
-                                    android:background="@drawable/ic_share" />
+                                     android:background="@drawable/ic_share" />
 
                                 <ImageView
                                     android:id="@+id/ImageView_fav"
@@ -259,7 +258,6 @@
                                     android:isIndicator="true"
                                     android:numStars="5"
                                     android:stepSize="1.0" />
-
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -301,34 +299,69 @@
                         android:visibility="visible">
 
                         <TextView
-                            android:id="@+id/description_header"
+                            android:textStyle="bold"
+                            android:id="@+id/catheadTV"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="5dp"
-                            android:text="Description"
+                            android:text="Sub-category"
                             android:textColor="@color/action_bar_colour" />
 
                         <TextView
-                            android:id="@+id/item_description"
+                            android:text="appliance"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/subCatTv"
+                           android:textColor="@color/black" />
+
+                        <TextView
+                            android:textStyle="bold"
+                            android:id="@+id/description_header"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
+                            android:text="Description"
+                            android:textColor="@color/action_bar_colour" />
+
+
+                        <TextView
+                            android:id="@+id/rommSIzeTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="size"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/conditionTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="size"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:id="@+id/item_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="5dp"
                             android:ellipsize="end"
                             android:maxLines="4"
                             android:singleLine="false"
                             android:text="@string/camera_permission_confirmation" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="Read more"
-                            android:textColor="@android:color/holo_red_light"
-                            android:visibility="gone" />
 
                     </LinearLayout>
 

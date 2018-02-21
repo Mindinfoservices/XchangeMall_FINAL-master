@@ -29,26 +29,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.adapter.MULTIPLEsELECTIONcATEGORY.idarray;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
-public class Postyour3Add extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
-
+public class Postyour3Add extends Fragment implements View.OnClickListener {
 
     ArrayList<String> imageSet = new ArrayList<String>();
     MULTIPLEsELECTIONcATEGORY postadapter;
-    private Button next_btn;
 
     private FragmentManager fm;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView;
-    private ImageButton back_arrowImage;
-    private ListView cat_sub_list_view;
     private ArrayList<categories> arrayList = new ArrayList<>();
     private String MainCatType;
-    private SliderLayout imageSlider;
-    private Button cat_TextView;
 
 
     @Nullable
@@ -68,13 +62,11 @@ public class Postyour3Add extends Fragment implements View.OnClickListener, Base
         }
         MainCatType=getData(getActivity().getApplicationContext(),"pcat_id","");
 
-        imageSlider = (SliderLayout)v.findViewById(R.id.slider);
-        cat_sub_list_view = (ListView) v.findViewById(R.id.cat_sub_list_view);
-        next_btn = (Button) v.findViewById(R.id.next_btn);
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
-        back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
-        cat_TextView = (Button) v.findViewById(R.id.cat_TextView);
+        ListView cat_sub_list_view = (ListView) v.findViewById(R.id.cat_sub_list_view);
+        Button next_btn = (Button) v.findViewById(R.id.next_btn);
+
+        ImageButton back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
+        Button cat_TextView = (Button) v.findViewById(R.id.cat_TextView);
 
 
 
@@ -93,32 +85,6 @@ public class Postyour3Add extends Fragment implements View.OnClickListener, Base
         next_btn.setOnClickListener(this);
         back_arrowImage.setOnClickListener(this);
         cross_imageView.setOnClickListener(this);
-
-
-        HashMap<String, File> url_maps = new HashMap<String, File>();
-
-        for (int i = 0; i < imageSet.size(); i++) {
-            url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-        }
-        for (String name : url_maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", name);
-            imageSlider.stopAutoCycle();
-            imageSlider.clearAnimation();
-            imageSlider.addSlider(textSliderView);
-        }
 
             if (getData(getActivity().getApplicationContext(), "first_entry_cat", "") != null) {
 
@@ -173,15 +139,25 @@ public class Postyour3Add extends Fragment implements View.OnClickListener, Base
                         Postyour4Add postyour4Add = new Postyour4Add();
                         postyour4Add.setArguments(bundle);
                         fm = getActivity().getSupportFragmentManager();
-                        fm.beginTransaction().replace(R.id.allCategeries, postyour4Add)
+                        fm.beginTransaction().replace(R.id.allCategeriesIN, postyour4Add)
                                 .addToBackStack(null).commit();
                     }
-                    else if (MainCatType.equals("102") || MainCatType.equals("272") )
+                    else if (MainCatType.equals("102"))
                     {
                         Postyour4Property postyour4add = new Postyour4Property();
                         postyour4add.setArguments(bundle);
                         fm = getActivity().getSupportFragmentManager();
-                        fm.beginTransaction().replace(R.id.allCategeries, postyour4add).addToBackStack(null).commit();
+                        fm.beginTransaction().replace(R.id.allCategeriesIN, postyour4add).addToBackStack(null).commit();
+
+                    }
+
+                    else if (MainCatType.equals("272") )
+                    {
+                        Postyour4Property postyour4add = new Postyour4Property();
+
+                        postyour4add.setArguments(bundle);
+                        fm = getActivity().getSupportFragmentManager();
+                        fm.beginTransaction().replace(R.id.allCategeriesIN, postyour4add).addToBackStack(null).commit();
 
                     }
 
@@ -210,35 +186,6 @@ public class Postyour3Add extends Fragment implements View.OnClickListener, Base
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         getActivity().startActivity(i);
-    }
-
-    private void opnenext(String str)
-    {
-
-        Bundle bundle = new Bundle();
-        bundle.putString("MainCatType",MainCatType);
-        bundle.putString("sub_cat_id",str);
-        bundle.putStringArrayList("imageSet",imageSet);
-
-        if (MainCatType.equals("101")) {
-            Postyour4Add postyour4add = new Postyour4Add();
-            postyour4add.setArguments(bundle);
-            fm.beginTransaction().replace(R.id.allCategeries, postyour4add).addToBackStack(null).commit();
-
-        }
-        else if (MainCatType.equals("102"))
-        {
-            Postyour4Property postyour4add = new Postyour4Property();
-            postyour4add.setArguments(bundle);
-            fm.beginTransaction().replace(R.id.allCategeries, postyour4add).addToBackStack(null).commit();
-
-        }
-
-    }
-
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-
     }
 }
 

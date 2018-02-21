@@ -160,7 +160,7 @@ public class SplashScreen extends BaseActivity implements ServiceConnection, Goo
                 }
 
             }
-        }, 3000);
+        }, 2000);
 
 
     }
@@ -235,8 +235,14 @@ public class SplashScreen extends BaseActivity implements ServiceConnection, Goo
                     processRequest();
                 }
                 else {
+                    if (mGoogleApiClient.isConnected())
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+                    else
+                    {
+                        if (mGoogleApiClient!=null)
+                            mGoogleApiClient.connect();
 
+                    }
                 processRequest();}
             }
 
@@ -248,7 +254,16 @@ public class SplashScreen extends BaseActivity implements ServiceConnection, Goo
         else if (requestCode == 32)
 
         {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            if (mGoogleApiClient.isConnected())
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+
+            else
+            {
+                if (mGoogleApiClient!=null)
+                    mGoogleApiClient.connect();
+
+            }
+
         }
 
     }
@@ -308,7 +323,7 @@ public class SplashScreen extends BaseActivity implements ServiceConnection, Goo
         //Disconnect from API onPause()
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            mGoogleApiClient.disconnect();
+
         }
     }
 

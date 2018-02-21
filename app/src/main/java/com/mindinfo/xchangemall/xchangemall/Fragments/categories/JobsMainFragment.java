@@ -15,6 +15,8 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ import com.loopj.android.http.RequestParams;
 import com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass;
 import com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add;
 import com.mindinfo.xchangemall.xchangemall.R;
+import com.mindinfo.xchangemall.xchangemall.activities.main.MainActivity;
 import com.mindinfo.xchangemall.xchangemall.activities.main.MultiPhotoSelectActivity;
 import com.mindinfo.xchangemall.xchangemall.adapter.ForJobAdapter;
 import com.mindinfo.xchangemall.xchangemall.adapter.MULTIPLEsELECTIONcATEGORY;
@@ -77,7 +80,8 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
     private static final int CAPTURE_IMAGES_FROM_CAMERA = 22;
     public String str_image_arr[];
     Typeface face;
-    String search_key = "", cat_id = "", sortby = "newfirst", type = "search", latitude = "", longitude = "", pcat_id = "", jobtype = "";
+    String csv ="";
+    String search_key = "", cat_id = "", sortby = "newfirst", type = "search", latitude = "", longitude = "", pcat_id = "103", jobtype = "";
     String lati = "0";
     String longi = "0";
     Bundle bundle;
@@ -92,7 +96,7 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
     private Button cancel_button, confirm_btn;
     private RelativeLayout snackbarPosition;
     private TextView cancel_btn, cameraIV, galleryIV, addimageHEaderTV, title_cat;
-    private ListView recyclerViewItem;
+    private RecyclerView recyclerViewItem;
     private ForJobAdapter itemlistAdapter;
     private List<ItemsMain> itemList;
     private LinearLayout Post_camera_icon;
@@ -118,7 +122,6 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            pcat_id = "103";
 
             for_sale.setBackgroundResource(R.color.trans);
             showcase.setBackgroundResource(R.color.trans);
@@ -138,12 +141,19 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
             community.setOnClickListener(this);
 
             cat_id = bundle.getString("subCatID", "");
+            csv=cat_id;
+            if (idarray.size() > 0)
+                idarray.clear();
 
-            if (cat_id != null) {
-                loadPost("", "", sortby, pcat_id, cat_id, latitude, longitude);
-            } else {
-                loadPost("", "", sortby, pcat_id, "", latitude, longitude);
-            }
+                loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
+        }
+        else
+        {
+            if (idarray.size() > 0)
+                idarray.clear();
+
+            loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
+
         }
         refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_SMARTISAN);
 
@@ -153,7 +163,14 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadPost("", "", sortby, pcat_id, "", latitude, longitude);
+                        search_key = ""; csv = ""; sortby = ""; type = "search"; jobtype = ""; latitude="";
+                        longitude="";pcat_id = "103";
+                        if (idarray.size()>0)
+                            idarray.clear();
+
+                        currentLocation.setText("Current location");
+
+                        loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
 
                         refreshLayout.setRefreshing(false);
                     }
@@ -178,32 +195,11 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    // Called by the LazyLoader when the ListView is ready for fresh data.
-    private void loadItems(ForJobAdapter adapter,JSONArray jsonArray) {
 
-        // Index is required to fetch the next set of items
-        int startIndex = adapter.getCount();
-
-        // Fetch more items Asynchronously.
-//        new FetchItemsTask(startIndex, responseListener,jsonArray).execute();
-    }
-
-//    // The FetchItemsTask delivers the new data to this listener in the main thread.
-//    private ResponseListener responseListener = new ResponseListener() {
-//        @Override
-//        public void onResponse(JSONArray newItems) {
-//
-//            // append the fresh data to the ListView.
-//            if (newItems!=null)
-//            itemlistAdapter = new ForJobAdapter(getActivity(), newItems, "job");
-//            recyclerViewItem.setAdapter(itemlistAdapter);
-//        }
-//    };
-    ///find item
     private void findbyview(View v) {
         refreshLayout = (PullRefreshLayout) v.findViewById(R.id.refreshLay);
 
-        recyclerViewItem = (ListView) v.findViewById(R.id.recyclerViewItem);
+        recyclerViewItem = (RecyclerView) v.findViewById(R.id.recyclerViewItem);
         noPostTv = (TextView) v.findViewById(R.id.noPostTv);
         catlog = (RelativeLayout) v.findViewById(R.id.catlog);
         //Post_camera_icon find
@@ -251,7 +247,6 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    //add Click on Iteh()
     private void addClickListner(View view) {
         currentLocation.setOnClickListener(this);
         industryTV.setOnClickListener(this);
@@ -264,7 +259,7 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                     search_key = searchbox.getText().toString();
-                    loadPost(search_key, "", sortby, pcat_id, cat_id, latitude, longitude);
+                    loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
                     return true;
                 }
                 return false;
@@ -435,8 +430,6 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
 
 
     private void ShowCategeriesSnak() {
-        if (idarray.size() > 0)
-            idarray.clear();
 
         catlog.setVisibility(View.VISIBLE);
         final ArrayList<categories> arrayList = new ArrayList<>();
@@ -477,8 +470,7 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
                 catlog.setVisibility(View.GONE);
                 String csv = idarray.toString().replace("[", "").replace("]", "")
                         .replace(", ", ",");
-                loadPost("", "", sortby, pcat_id, csv, latitude, longitude);
-                cat_id = "";
+                loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
 
             }
         });
@@ -537,14 +529,17 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
 
                             System.out.println("****** post response *********");
                             System.out.println(posts);
-                            if (posts.length() > 0) {
+                            if (posts.length() > 0)
+                            {
                                 recyclerViewItem.setVisibility(View.VISIBLE);
                                 noPostTv.setVisibility(View.GONE);
-                                itemList = new ArrayList<>();
-                                for (int i = 0; i < posts.length(); i++) {
+
+                                    LinearLayoutManager llm = new LinearLayoutManager(getActivity().getApplicationContext());
+                                    llm.setOrientation(LinearLayoutManager.VERTICAL);
+                                    recyclerViewItem.setLayoutManager(llm);
                                     itemlistAdapter = new ForJobAdapter(getActivity(), posts, "job");
                                     recyclerViewItem.setAdapter(itemlistAdapter);
-                                }
+                                    System.gc();
                                 itemlistAdapter.notifyDataSetChanged();
                             } else {
                                 recyclerViewItem.setVisibility(View.GONE);
@@ -697,27 +692,27 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
                 String toastMsg = String.format("Place: %s", place.getName());
                 String new_location = getAddressFromLatlng(location, getActivity().getApplicationContext(), 0);
                 currentLocation.setText("  " + new_location);
-                loadPost("", "", sortby, pcat_id, cat_id, latitude, longitude);
-                latitude = "";
-                longitude = "";
+                loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
+
             }
         }
 
         if (requestCode == 01) {
+            if (resultCode== -1) {
+                ArrayList<String> imageArray = new ArrayList<>();
+                System.out.println("********** image uri ****");
+                System.out.println(imageUri);
 
-            ArrayList<String> imageArray = new ArrayList<>();
-            System.out.println("********** image uri ****");
-            System.out.println(imageUri);
+                imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
 
-            imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
-            saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                nextFragment(imageArray, str_image_arr);
 
-            nextFragment(imageArray,str_image_arr);
-
-
+            }
         }
 
-        if (requestCode == 17) {
+        if (requestCode == 17)
+        {
             if (resultCode == 1) {
 
                 saveData(getActivity().getApplicationContext(), "language", "select");
@@ -775,7 +770,7 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
 
 
         new AlertDialog.Builder(getActivity())
-                .setSingleChoiceItems(jobtypes, 0, null)
+                .setSingleChoiceItems(jobtypes, 2, null)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.dismiss();
@@ -794,47 +789,16 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
                             jobtype = "";
 
                         dialog.dismiss();
-                        loadPost("", jobtype, sortby, pcat_id, cat_id, latitude, longitude);
+                        loadPost(search_key, jobtype, sortby, pcat_id, csv, latitude, longitude);
 
                     }
                 })
                 .show();
-//
-//
-//
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        builder.setTitle("Select Job Type");
-//
-//
-//
-//        builder.setMultiChoiceItems(jobtypes, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-//                // user checked or unchecked a box
-//                checkedItems[which]=isChecked;
-//
-//                if (isChecked)
-//                jobtype = jobtypes[which];
-//            }
-//        });
-//
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                System.out.println("selected option *********");
-//                System.out.println(jobtype);
-//
-//                dialog.dismiss();
-//                loadPost(search_key, jobtype, sortby, pcat_id, cat_id, latitude, longitude);
-//
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", null);
-//
-//// create and show the alert dialog
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
+
+    }
+    public void onBackPressed() {
+        startActivity(new Intent(getActivity().getApplicationContext(),
+                MainActivity.class).putExtra("EXIT", true));
+
     }
 }

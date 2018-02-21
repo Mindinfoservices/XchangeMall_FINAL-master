@@ -34,12 +34,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour4Add.face;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
-public class Postyour5Add extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
-
+public class Postyour5Add extends Fragment implements View.OnClickListener{
     public static ArrayList<String> selectedData;
     final boolean[] checkedItems = {false, false, false,false};
     String obj;
@@ -53,8 +54,8 @@ public class Postyour5Add extends Fragment implements View.OnClickListener, Base
     boolean iscallSelected= false,isVdoselected =false,isChatSelected=false,istextSelected=false;
     //next_btn
     private Button next_btn,ok_btn,cancel_btn;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView, headercategory, contactByTv;
+
+    private TextView  headercategory, contactByTv;
     private CheckedTextView callTV,vdoTV,chatTV,textTV;
     private ImageButton back_arrowImage;
     //Fragment Manager
@@ -62,7 +63,6 @@ public class Postyour5Add extends Fragment implements View.OnClickListener, Base
     private String sub_cat_id = "", MainCatType, postTitle, postDes, postPrice, postSize, postCondition, privacy_str, phone_str, Existence_str, contName_str, language_str;
     private AppCompatSpinner spinnerPrivacy, spinnerLanguage;
     private EditText phoneNumberEditText, ExtensionEditText, contactNameEditText;
-    private SliderLayout imageSlider;
 
     @Nullable
     @Override
@@ -78,24 +78,19 @@ public class Postyour5Add extends Fragment implements View.OnClickListener, Base
         onClickonItem(v);
 
         Bundle bundle = this.getArguments();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             sub_cat_id = bundle.getString("sub_cat_id");
             MainCatType = bundle.getString("MainCatType");
             imageSet = bundle.getStringArrayList("imageSet");
-            if (MainCatType.equals("101"))
-            {
+            if (MainCatType.equals("101")) {
                 obj = bundle.getString("bussinessobj");
             }
 
-            if (MainCatType.equals("102"))
-            {
+            if (MainCatType.equals("102") || MainCatType.equals("272")) {
                 obj = bundle.getString("prop_obj");
                 categoryids = bundle.getStringArrayList("selectedcategories");
 
-            }
-
-            else {
+            } else {
                 postTitle = bundle.getString("postTitle");
                 postDes = bundle.getString("postDes");
                 postPrice = bundle.getString("postPrice");
@@ -106,50 +101,21 @@ public class Postyour5Add extends Fragment implements View.OnClickListener, Base
             }
 
 
-
-            MainCatType=getData(getActivity().getApplicationContext(),"pcat_id","");
-            HashMap<String, File> url_maps = new HashMap<String, File>();
-
-            for (int i = 0; i < imageSet.size(); i++) {
-                url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-            }
-            for (String name : url_maps.keySet()) {
-                TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-                // initialize a SliderLayout
-                textSliderView
-                        .description(name)
-                        .image(url_maps.get(name))
-                        .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                        .setOnSliderClickListener(this);
-
-                //add your extra information
-                textSliderView.bundle(new Bundle());
-                textSliderView.getBundle()
-                        .putString("extra", name);
-                imageSlider.stopAutoCycle();
-                imageSlider.clearAnimation();
-                imageSlider.addSlider(textSliderView);
-            }
+            MainCatType = getData(getActivity().getApplicationContext(), "pcat_id", "");
         }
-
-
         return v;
     }
 
     //findItem
     private void findItem(View v) {
-        imageSlider = (SliderLayout) v.findViewById(R.id.slider);
         spinnerPrivacy = (AppCompatSpinner) v.findViewById(R.id.spinnerPrivacy);
         spinnerLanguage = (AppCompatSpinner) v.findViewById(R.id.spinnerLanguage);
         phoneNumberEditText = (EditText) v.findViewById(R.id.phoneNumberEditText);
         ExtensionEditText = (EditText) v.findViewById(R.id.ExtensionEditText);
         contactNameEditText = (EditText) v.findViewById(R.id.contactNameEditText);
 
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
         headercategory = (TextView) v.findViewById(R.id.headercategory);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
+
         contactByTv = (TextView) v.findViewById(R.id.contactByTv);
         back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
         next_btn = (Button) v.findViewById(R.id.next_btn);
@@ -536,16 +502,14 @@ cancel_btn.setOnClickListener(new View.OnClickListener() {
         bundle.putString("pcat_name", pcat_name);
         bundle.putStringArrayList("imageSet", imageSet);
 
-
         if (MainCatType.equals("101")) {
-
             bundle.putString("bussinessobj", obj);
         }
-            else if (MainCatType.equals("102")) {
+
+            else if (MainCatType.equals("102") || MainCatType.equals("272")) {
 
             bundle.putString("prop_obj", obj);
         }
-
         else {
             bundle.putStringArrayList("selectedcategories", categoryids);
             bundle.putString("postTitle", postTitle);
@@ -559,7 +523,7 @@ cancel_btn.setOnClickListener(new View.OnClickListener() {
         saveData(getActivity().getApplicationContext(),"pcat_id",MainCatType);
         Postyour6Add postyour6add = new Postyour6Add();
         postyour6add.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.allCategeries, postyour6add).addToBackStack(null).commit();
+        fm.beginTransaction().replace(R.id.allCategeriesIN, postyour6add).addToBackStack(null).commit();
 
     }
 
@@ -568,13 +532,5 @@ cancel_btn.setOnClickListener(new View.OnClickListener() {
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         getActivity().startActivity(i);
     }
-
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-
-
-    }
-
-
 
 }

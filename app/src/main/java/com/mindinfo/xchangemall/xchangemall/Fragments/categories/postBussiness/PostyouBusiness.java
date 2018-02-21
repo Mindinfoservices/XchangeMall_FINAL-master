@@ -34,7 +34,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.getListData;
-
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 
 
 public class PostyouBusiness extends Fragment implements View.OnClickListener {
@@ -45,8 +46,7 @@ public class PostyouBusiness extends Fragment implements View.OnClickListener {
     ArrayList<String> postarr = new ArrayList<String>();
     TextView business_header,about_header,descripption_header,social_header,website_header,hours_header;
     private Button next_btn;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView;
+
     private ImageButton back_arrowImage;
     private FragmentManager fm;
     private AppCompatSpinner SpinnerCat;
@@ -87,9 +87,9 @@ public class PostyouBusiness extends Fragment implements View.OnClickListener {
     {
        SpinnerCat = (AppCompatSpinner) v.findViewById(R.id.SpinnerCat);
         next_btn = (Button) v.findViewById(R.id.next_btn);
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
 
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
+
+
 
         hours_header = (TextView) v.findViewById(R.id.TextViewHouseOfOpertion);
         business_header = (TextView) v.findViewById(R.id.business_name_header);
@@ -225,7 +225,7 @@ catch (Exception e)
         Postyour5Add postyour5Add = new Postyour5Add();
         postyour5Add.setArguments(bundle);
         fm = getActivity().getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.allCategeries,postyour5Add).commit();
+        fm.beginTransaction().replace(R.id.allCategeriesIN,postyour5Add).commit();
     }
 
     private void OpenMainActivity()

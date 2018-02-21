@@ -63,9 +63,9 @@ public class DetailsFragment extends AppCompatActivity implements View.OnClickLi
     GoogleMap map;
     JSONObject responseOBj, ownerDetailsoBj;
     String response, item_owner_name, item_post_time, item_prize, item_details,
-            item_description, post_user_id, fav_status = "", report_status = "";
+            item_description, post_user_id, fav_status = "", report_status = "",item_cat="",item_size="Not disclosed",item_condition="Not disclosed";
     TextView item_ownerTV, item_postTimeTv, view_profileTV, item_priceTv, item_detailsTV,
-            item_descriptionTV, description_headerTv,locationTV;
+            item_descriptionTV, description_headerTv,locationTV,subCatTv,catheadTV,conditionTv,sizeTv;
     double item_lat, item_lng;
 
     Button buynow_btn;
@@ -100,6 +100,10 @@ public class DetailsFragment extends AppCompatActivity implements View.OnClickLi
                 post_user_id = responseOBj.getString("user_id");
 
                 item_prize = responseOBj.getString("price");
+                item_cat = responseOBj.getString("category");
+
+                item_size = responseOBj.getString("size");
+                item_condition = responseOBj.getString("conditions");
 
                 item_details = responseOBj.getString("title");
                 profile_photo = responseOBj.getString("profile_photo");
@@ -230,9 +234,11 @@ public class DetailsFragment extends AppCompatActivity implements View.OnClickLi
 
     private void setData() {
         item_ownerTV.setText(item_owner_name);
-        item_postTimeTv.setText(item_post_time);
-
+        item_postTimeTv.setText("Ad Posted At :" + item_post_time);
         item_priceTv.setText(item_prize);
+        subCatTv.setText(item_cat);
+        sizeTv.setText("Size : "+item_size);
+        conditionTv.setText("Condition : " +item_condition);
         item_detailsTV.setText(item_details);
         item_descriptionTV.setText(item_description);
 
@@ -246,8 +252,12 @@ public class DetailsFragment extends AppCompatActivity implements View.OnClickLi
         item_postTimeTv.setTypeface(face);
         view_profileTV.setTypeface(face);
         description_headerTv.setTypeface(face);
+        catheadTV.setTypeface(face);
         buynow_btn.setTypeface(face);
         locationTV.setTypeface(face);
+        subCatTv.setTypeface(face);
+        conditionTv.setTypeface(face);
+        sizeTv.setTypeface(face);
 
     }
 
@@ -265,11 +275,13 @@ public class DetailsFragment extends AppCompatActivity implements View.OnClickLi
         item_priceTv = (TextView) findViewById(R.id.itemPrice);
         item_detailsTV = (TextView) findViewById(R.id.item_name);
         locationTV = (TextView) findViewById(R.id.locationName);
+        subCatTv = (TextView) findViewById(R.id.subCatTv);
+        conditionTv = (TextView) findViewById(R.id.conditionTv);
+        sizeTv = (TextView) findViewById(R.id.rommSIzeTv);
         item_descriptionTV = (TextView) findViewById(R.id.item_description);
         description_headerTv = (TextView) findViewById(R.id.description_header);
+        catheadTV = (TextView) findViewById(R.id.catheadTV);
         buynow_btn = (Button) findViewById(R.id.buy_btn);
-
-
 
     }
 

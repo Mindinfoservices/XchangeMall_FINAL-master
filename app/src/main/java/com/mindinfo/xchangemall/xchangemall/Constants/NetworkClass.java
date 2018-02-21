@@ -47,13 +47,15 @@ import java.util.regex.Pattern;
 import cz.msebera.android.httpclient.Header;
 
 import static com.mindinfo.xchangemall.xchangemall.activities.main.BaseActivity.BASE_URL_NEW;
+import static com.mindinfo.xchangemall.xchangemall.activities.main.MainActivity.iscatChecked;
+import static com.mindinfo.xchangemall.xchangemall.activities.main.MainActivity.isdogChecked;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.NullData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
 public class NetworkClass extends AppCompatActivity {
 
-     static JSONObject responseDEtailsOBJ;
+    static JSONObject responseDEtailsOBJ;
     //POST network request
 
     public static void getListData(String str, ArrayList<categories> list, Context context) {
@@ -63,26 +65,23 @@ public class NetworkClass extends AppCompatActivity {
         try {
             JSONArray jsonArray = new JSONArray(str_s);
 
-            for(int i = 0;i<jsonArray.length();i++)
-            {
-                JSONObject  jsonObject1 = jsonArray.getJSONObject(i);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                 String pcat = jsonObject1.getString("id");
                 System.out.println(str);
                 System.out.println(pcat);
-                if (pcat.equals(str))
-                {
+                if (pcat.equals(str)) {
                     System.out.println("******* respose list cat ***");
                     System.out.println(jsonObject1);
 
-                    for (int j = 0;j<jsonObject1.length();j++)
-                {
-                    String count = String.valueOf(j);
-                    JSONObject joboj = jsonObject1.getJSONObject(count);
-                    String title = joboj.getString("title");
-                    String id = joboj.getString("id");
-                    categories cat = new categories(id, title);
-                   list.add(cat);
-                }
+                    for (int j = 0; j < jsonObject1.length(); j++) {
+                        String count = String.valueOf(j);
+                        JSONObject joboj = jsonObject1.getJSONObject(count);
+                        String title = joboj.getString("title");
+                        String id = joboj.getString("id");
+                        categories cat = new categories(id, title);
+                        list.add(cat);
+                    }
 
                 }
             }
@@ -92,9 +91,9 @@ public class NetworkClass extends AppCompatActivity {
     }
 
 
-    public static  void send_report(final String user_id, final String post_id,
+    public static void send_report(final String user_id, final String post_id,
 
-                                 final ImageView holder, final Activity context) {
+                                   final ImageView holder, final Activity context) {
         final AsyncHttpClient client = new AsyncHttpClient();
         final RequestParams params = new RequestParams();
 
@@ -103,7 +102,7 @@ public class NetworkClass extends AppCompatActivity {
 
         System.out.println(params);
 
-        if (user_id.length()<=0)
+        if (user_id.length() <= 0)
             OpenWarning(context);
 
 
@@ -118,17 +117,17 @@ public class NetworkClass extends AppCompatActivity {
                 System.out.println("**** report api ********* " + post_id);
                 System.out.println(response);
                 try {
-                    String   response_fav = response.getString("status");
-                    if (response_fav.equals("1"))
+                    int response_fav = response.getInt("status");
+
+                    if (response_fav==1)
                         Picasso.with(context).load(R.drawable.flag_green).into(holder);
 
-                    else if (response_fav.equals("0"))
+                    else
                         Picasso.with(context).load(R.drawable.flag_red).into(holder);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
 
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -149,10 +148,9 @@ public class NetworkClass extends AppCompatActivity {
     }
 
 
+    public static void Send_fav(final String user_id, final String post_id,
 
-    public static  void Send_fav(final String user_id, final String post_id,
-
-                                 final ImageView holder, final Activity context) {
+                                final ImageView holder, final Activity context) {
         final AsyncHttpClient client = new AsyncHttpClient();
         final RequestParams params = new RequestParams();
 
@@ -161,7 +159,7 @@ public class NetworkClass extends AppCompatActivity {
 
         System.out.println(params);
 
-        if (user_id.length()<=0)
+        if (user_id.length() <= 0)
             OpenWarning(context);
 
 
@@ -176,7 +174,7 @@ public class NetworkClass extends AppCompatActivity {
                 System.out.println("**** fave api ********* " + post_id);
                 System.out.println(response);
                 try {
-                    String   response_fav = response.getString("status");
+                    String response_fav = response.getString("status");
                     if (response_fav.equals("1"))
                         Picasso.with(context).load(R.drawable.fav).into(holder);
                     else if (response_fav.equals("0"))
@@ -205,8 +203,7 @@ public class NetworkClass extends AppCompatActivity {
 
     }
 
-    public static void OpenWarning(final Activity context)
-    {
+    public static void OpenWarning(final Activity context) {
         AlertDialog.Builder ab = new AlertDialog.Builder(context, R.style.MyAlertDialogStyle1);
         //ab.setTitle("Are you shore you want to log out");
         ab.setMessage("Login To Continue");
@@ -249,8 +246,8 @@ public class NetworkClass extends AppCompatActivity {
             , final String price, final String address, final String phone_no
             , final String latitude, final String longitude,
                                final ArrayList<String> category_array, final String parent_category,
-                               final String lng, ArrayList<String> imageSet)
-    {
+                               final String lng, ArrayList<String> imageSet,final String size, final
+                               String conditions) {
 
         final AsyncHttpClient client = new AsyncHttpClient();
         final RequestParams params = new RequestParams();
@@ -261,12 +258,12 @@ public class NetworkClass extends AppCompatActivity {
         String category = category_array.toString().replace("[", "").replace("]", "")
                 .replace(", ", ",");
 
-        String contact_by = getData(context,"contact_by","");
-        String currency_code = getData(context,"currency_code","");
+        String contact_by = getData(context, "contact_by", "");
+        String currency_code = getData(context, "currency_code", "");
 
         TimeZone timezone = TimeZone.getDefault();
         System.out.println("* timezone ****** " + timezone.getID());
-        System.out.println("* currency code ****** " +currency_code);
+        System.out.println("* currency code ****** " + currency_code);
 
         params.put("contact_by", contact_by);
         params.put("title", title);
@@ -283,16 +280,17 @@ public class NetworkClass extends AppCompatActivity {
         params.put("longitude", longitude);
         params.put("currency_code", currency_code);
         params.put("timezone", timezone.getID());
+        params.put("size", size);
+        params.put("conditions", conditions);
 
         System.out.println("*************** featured image data ***********");
 
         try {
-            for (int i =0;i<imageSet.size();i++)
-            {
-                String result = getData(context,"item_img"+i,"");
+            for (int i = 0; i < imageSet.size(); i++) {
+                String result = getData(context, "item_img" + i, "");
 
-                params.put("featured_img"+(i+1),new File(result));
-                NullData(context, "item_img"+i);
+                params.put("featured_img" + (i + 1), new File(result));
+                NullData(context, "item_img" + i);
 
 
             }
@@ -304,10 +302,10 @@ public class NetworkClass extends AppCompatActivity {
         System.out.println(params);
 
         client.setTimeout(60 * 1000);
-        client.setConnectTimeout(60*1000);
-        client.setResponseTimeout(60*1000);
+        client.setConnectTimeout(60 * 1000);
+        client.setResponseTimeout(60 * 1000);
 
-        client.post(BASE_URL_NEW+"addpost", params, new JsonHttpResponseHandler() {
+        client.post(BASE_URL_NEW + "addpost", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 ringProgressDialog.dismiss();
@@ -318,24 +316,23 @@ public class NetworkClass extends AppCompatActivity {
                     String data = response.getString("status");
                     if (data.equals("1")) {
 
-                        Toast.makeText(context,"Post Added ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Post Added ", Toast.LENGTH_LONG).show();
                         context.startActivity(new Intent(context, MainActivity.class)
                                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("EXIT", true));
 
-                    }
-                    else
-                    {
-                        Toast.makeText(context,response.getString("message"),Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println("******** response  add post *******");
                 System.out.println(errorResponse);
                 ringProgressDialog.dismiss();
-                Toast.makeText(context,"Internal Server Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Internal Server Error", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -355,8 +352,7 @@ public class NetworkClass extends AppCompatActivity {
             , final String latitude, final String longitude,
                                final ArrayList<String> category_array, final String parent_category,
                                final String lng, ArrayList<String> imageSet
-            ,String job_responsibilities,String experience_skills,final String job_type, final  String job_salary)
-    {
+            , String job_responsibilities, String experience_skills, final String job_type, final String job_salary) {
 
         final AsyncHttpClient client = new AsyncHttpClient();
         final RequestParams params = new RequestParams();
@@ -367,7 +363,7 @@ public class NetworkClass extends AppCompatActivity {
         String category = category_array.toString().replace("[", "").replace("]", "")
                 .replace(", ", ",");
 
-        String contact_by = getData(context,"contact_by","");
+        String contact_by = getData(context, "contact_by", "");
         TimeZone timezone = TimeZone.getDefault();
 
         params.put("contact_by", contact_by);
@@ -398,13 +394,12 @@ public class NetworkClass extends AppCompatActivity {
         System.out.println("*************** featured image data in jobs***********");
 
         try {
-            for (int i =0;i<imageSet.size();i++)
-            {
-                String result = getData(context,"item_img"+i,"");
+            for (int i = 0; i < imageSet.size(); i++) {
+                String result = getData(context, "item_img" + i, "");
 
-                params.put("featured_img"+(i+1),new File(result));
+                params.put("featured_img" + (i + 1), new File(result));
 
-                NullData(context, "item_img"+i);
+                NullData(context, "item_img" + i);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -414,10 +409,10 @@ public class NetworkClass extends AppCompatActivity {
         System.out.println(params);
 
         client.setTimeout(60 * 1000);
-        client.setConnectTimeout(60*1000);
-        client.setResponseTimeout(60*1000);
+        client.setConnectTimeout(60 * 1000);
+        client.setResponseTimeout(60 * 1000);
 
-        client.post(BASE_URL_NEW+"job_post", params, new JsonHttpResponseHandler() {
+        client.post(BASE_URL_NEW + "job_post", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 ringProgressDialog.dismiss();
@@ -427,22 +422,22 @@ public class NetworkClass extends AppCompatActivity {
                 try {
                     String data = response.getString("status");
                     if (data.equals("1")) {
-                        Toast.makeText(context,"Post Added ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Post Added ", Toast.LENGTH_LONG).show();
                         context.startActivity(new Intent(context, MainActivity.class)
-                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("EXIT", true));                    }
-                    else
-                    {
-                        Toast.makeText(context,response.getString("message"),Toast.LENGTH_LONG).show();
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("EXIT", true));
+                    } else {
+                        Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println("******** response  job_post *******");
                 System.out.println(errorResponse);
                 ringProgressDialog.dismiss();
-                Toast.makeText(context,"Internal Server Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Internal Server Error", Toast.LENGTH_LONG).show();
 
 
             }
@@ -465,41 +460,52 @@ public class NetworkClass extends AppCompatActivity {
                                    final String description
             , final String address, final String phone_no
             , final String latitude, final String longitude,
-                               final ArrayList<String> category_array, final String parent_category,
-                               final String lng, ArrayList<String> imageSet
-            ,String bathroomCount,String room_count,final String dog_friendly , final  String cat_friendly,final  String price,final  String prop_size)
-    {
+                                   final ArrayList<String> category_array, final String parent_category,
+                                   final String lng, ArrayList<String> imageSet
+            , String bathroomCount, String room_count, final String price, final String prop_size) {
 
+        String dog_friendly = "", cat_friendly = "";
         final AsyncHttpClient client = new AsyncHttpClient();
         final RequestParams params = new RequestParams();
         final ProgressDialog ringProgressDialog;
         ringProgressDialog = ProgressDialog.show(context, "Please wait ...", "upload process", true);
         ringProgressDialog.setCancelable(false);
 
-        String category = getData(context,"categories","");
+        String category = getData(context, "categories", "");
 
 
-        String contact_by = getData(context,"contact_by","");
+        String contact_by = getData(context, "contact_by", "");
         TimeZone timezone = TimeZone.getDefault();
-        String currency_code = getData(context,"currency_code","");
+        String currency_code = getData(context, "currency_code", "");
+
+
+        if (isdogChecked)
+            dog_friendly = "Yes";
+        else
+            dog_friendly = "No";
+
+        if (iscatChecked)
+            cat_friendly = "Yes";
+        else
+            cat_friendly = "No";
 
         params.put("title", title);
         params.put("user_id", user_id);
+        params.put("price", price);
         params.put("contact_by", contact_by);
         params.put("description", description);
         params.put("cat_friendly", cat_friendly);
-        params.put("dog_friendly",dog_friendly);
+        params.put("dog_friendly", dog_friendly);
         params.put("address", address);
         params.put("phone_no", phone_no);
-        params.put("price", price);
         params.put("latitude", latitude);
         params.put("lng", lng);
         params.put("category", category);
         params.put("parent_category", parent_category);
         params.put("contact_person", contact_person);
         params.put("longitude", longitude);
-        params.put("bathrooms",bathroomCount);
-        params.put("rooms_bedrooms",room_count );
+        params.put("bathrooms", bathroomCount);
+        params.put("rooms_bedrooms", room_count);
         params.put("size", prop_size);
         params.put("timezone", timezone.getID());
         params.put("currency_code", currency_code);
@@ -510,17 +516,15 @@ public class NetworkClass extends AppCompatActivity {
 //        System.out.println(job_responsibilities);
 //        System.out.println(title);
 //        System.out.println(job_salary);
-
         System.out.println("*************** featured image data in jobs***********");
 
         try {
-            for (int i =0;i<imageSet.size();i++)
-            {
-                String result = getData(context,"item_img"+i,"");
+            for (int i = 0; i < imageSet.size(); i++) {
+                String result = getData(context, "item_img" + i, "");
 
-                params.put("featured_img"+(i+1),new File(result));
+                params.put("featured_img" + (i + 1), new File(result));
 
-                NullData(context, "item_img"+i);
+                NullData(context, "item_img" + i);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -529,10 +533,10 @@ public class NetworkClass extends AppCompatActivity {
 
         System.out.println(params);
         client.setTimeout(60 * 1000);
-        client.setConnectTimeout(60*1000);
-        client.setResponseTimeout(60*1000);
+        client.setConnectTimeout(60 * 1000);
+        client.setResponseTimeout(60 * 1000);
 
-        client.post(BASE_URL_NEW+"add_property", params, new JsonHttpResponseHandler() {
+        client.post(BASE_URL_NEW + "add_property", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 ringProgressDialog.dismiss();
@@ -542,22 +546,22 @@ public class NetworkClass extends AppCompatActivity {
                 try {
                     String data = response.getString("status");
                     if (data.equals("1")) {
-                        Toast.makeText(context,"Post Added ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Post Added ", Toast.LENGTH_LONG).show();
                         context.startActivity(new Intent(context, MainActivity.class)
-                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("EXIT", true));                    }
-                    else
-                    {
-                        Toast.makeText(context,response.getString("message"),Toast.LENGTH_LONG).show();
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("EXIT", true));
+                    } else {
+                        Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 System.out.println("******** response  property_post *******");
                 System.out.println(errorResponse);
                 ringProgressDialog.dismiss();
-                Toast.makeText(context,"Internal Server Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Internal Server Error", Toast.LENGTH_LONG).show();
 
 
             }
@@ -581,7 +585,7 @@ public class NetworkClass extends AppCompatActivity {
         final AsyncHttpClient client = new AsyncHttpClient();
         final RequestParams params = new RequestParams();
 
-      responseDEtailsOBJ = new JSONObject();
+        responseDEtailsOBJ = new JSONObject();
 
         params.put("user_id", user_id);
         params.put("post_id", post_id);
@@ -590,8 +594,8 @@ public class NetworkClass extends AppCompatActivity {
         ringProgressDialog.setCancelable(false);
 
         client.setTimeout(60 * 1000);
-        client.setConnectTimeout(60*1000);
-        client.setResponseTimeout(60*1000);
+        client.setConnectTimeout(60 * 1000);
+        client.setResponseTimeout(60 * 1000);
         client.post(BASE_URL_NEW + "get_post_details", params, new JsonHttpResponseHandler() {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 responseDEtailsOBJ = response;
@@ -600,11 +604,11 @@ public class NetworkClass extends AppCompatActivity {
 
                 System.out.println(response);
                 try {
-                 String   response_fav = response.getString("status");
+                    String response_fav = response.getString("status");
                     if (response_fav.equals("1")) {
                         JSONObject obj = response.getJSONObject("result");
                         responseDEtailsOBJ = obj;
-                        openNextAct(context,responseDEtailsOBJ, postarr,toAct,fragment_name);
+                        openNextAct(context, responseDEtailsOBJ, postarr, toAct, fragment_name);
                     }
 
 
@@ -638,11 +642,11 @@ public class NetworkClass extends AppCompatActivity {
                                     ArrayList<String> postarr, Class toact, String fragment_name) {
         if (responseDEtailsOBJ != null) {
             Bundle bundle = new Bundle();
-            bundle.putString("fragment_name",fragment_name);
+            bundle.putString("fragment_name", fragment_name);
             bundle.putString("productDetails", responseDEtailsOBJ.toString());
             bundle.putStringArrayList("images", postarr);
-                    context.startActivity(new Intent(context.getApplicationContext(), toact)
-                            .putExtras(bundle));
+            context.startActivity(new Intent(context.getApplicationContext(), toact)
+                    .putExtras(bundle));
         }
 
 
@@ -653,7 +657,6 @@ public class NetworkClass extends AppCompatActivity {
         Matcher m = pat.matcher(s);
         return m.matches();
     }
-
 
 
     public static Animation inFromRightAnimation() {
@@ -720,56 +723,54 @@ public class NetworkClass extends AppCompatActivity {
     }
 
 
-    public static void resetData(Context context)
-    {
+    public static void resetData(Context context) {
         saveData(context, "first_entry", "true");
         saveData(context, "first_entry_contact", "true");
         saveData(context, "first_entry_cat", "true");
-        saveData(context,"phone_data", "");
-        saveData(context,"extension_data", "");
-        saveData(context,"contact_name_data", "");
-        saveData(context,"contact_type_data", "");
-        saveData(context,"language", "");
+        saveData(context, "phone_data", "");
+        saveData(context, "extension_data", "");
+        saveData(context, "contact_name_data", "");
+        saveData(context, "contact_type_data", "");
+        saveData(context, "language", "");
     }
 
 
-    public static void checkData(String key, EditText editText, Context context)
-    {
+    public static void checkData(String key, EditText editText, Context context) {
 
-        if (getData(context,key,"")!=null) {
+        if (getData(context, key, "") != null) {
             String result = getData(context, key, "");
             editText.setText(result);
         }
     }
 
-    public static void checkDataByTV(String key, TextView editText, Context context)
-    {
+    public static void checkDataByTV(String key, TextView editText, Context context) {
 
-        if (getData(context,key,"")!=null) {
+        if (getData(context, key, "") != null) {
             String result = getData(context, key, "");
             editText.setText(result);
         }
     }
-    public static void saveDatatoLocal(String key, EditText editText,Context context)
-    {
 
-        String result =editText.getText().toString();
+    public static void saveDatatoLocal(String key, EditText editText, Context context) {
 
-        MySharedPref.saveData(context,key,result);
+        String result = editText.getText().toString();
 
-    }
-
-
-    public static void saveDatatoLocalByTV(String key, TextView editText,Context context)
-    {
-
-        String result =editText.getText().toString();
-
-        MySharedPref.saveData(context,key,result);
+        MySharedPref.saveData(context, key, result);
 
     }
 
-    /** decodes image and scales it to reduce memory consumption **/
+
+    public static void saveDatatoLocalByTV(String key, TextView editText, Context context) {
+
+        String result = editText.getText().toString();
+
+        MySharedPref.saveData(context, key, result);
+
+    }
+
+    /**
+     * decodes image and scales it to reduce memory consumption
+     **/
     public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -785,14 +786,9 @@ public class NetworkClass extends AppCompatActivity {
     }
 
 
-
-
-
-
     public static void openReportWarning(final String user_id, final String post_id,
 
-                                         final ImageView holder, final Activity context)
-    {
+                                         final ImageView holder, final Activity context) {
         AlertDialog.Builder ab = new AlertDialog.Builder
                 (context, R.style.MyAlertDialogStyle1);
         ab.setTitle("Spam / Report ").setIcon(R.drawable.spam);
@@ -800,7 +796,7 @@ public class NetworkClass extends AppCompatActivity {
         ab.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              send_report(user_id,post_id, holder,context);
+                send_report(user_id, post_id, holder, context);
                 dialog.dismiss();
             }
         });

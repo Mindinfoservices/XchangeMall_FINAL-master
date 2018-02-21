@@ -1008,10 +1008,16 @@ break;
     @Override
     public void onBackPressed() {
         System.out.println("*********** is moved from hiome +++ " + ismovedfromHome);
+
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finishAffinity();
+            finish();
+        }
         if (left_nav_view.getVisibility() == View.VISIBLE) {
             left_nav_view.setVisibility(View.GONE);
             ismovedfromHome = false;
-        } else {
+        }
+        else {
             if (ismovedfromHome) {
                 startActivity(new Intent(this, MainActivity.class));
                 ismovedfromHome = false;

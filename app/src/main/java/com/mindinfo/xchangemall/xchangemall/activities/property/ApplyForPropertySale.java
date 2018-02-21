@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class ApplyForPropertySale extends AppCompatActivity {
     private Button requesst_btn;
     private ImageView back_btn;
     private ScrollView scrollview;
+    private LinearLayout formLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +70,10 @@ public class ApplyForPropertySale extends AppCompatActivity {
         requesst_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                setData();
+getEntereData();
                 validateForm();
             }
         });
-
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +144,7 @@ public class ApplyForPropertySale extends AppCompatActivity {
 
 
     private void initui() {
+        formLay = (LinearLayout)findViewById(R.id.formLay);
         currencyTV = (TextView)findViewById(R.id.currencyTV);
         rightTV = (TextView) findViewById(R.id.rightTV);
 
@@ -241,22 +243,25 @@ public class ApplyForPropertySale extends AppCompatActivity {
     private void validateForm() {
 
         String em = etemail.getText().toString();
+        email=em;
         String empatt = "^[a-zA-Z0-9_.]+@[a-zA-Z]+\\.[a-zA-Z]+$";
         boolean b4 = isMatch(em, empatt);
-
         if (fullname.length() == 0) {
-            etfullname.setError("Field Required");
+            etfullname.setError("Name Required");
             etfullname.requestFocus();
+
         }
 
         else if (phone.length() == 0) {
-            etphone.setError("Field Required");
+            etphone.setError("Phone Required");
             etphone.requestFocus();
+
         }
 
         else if (email.length() == 0 || !b4) {
             etemail.setError("Invalid Email");
             etemail.requestFocus();
+
         }
         else  if (movein.length() == 0) {
             etmovein.setError("Field Required");

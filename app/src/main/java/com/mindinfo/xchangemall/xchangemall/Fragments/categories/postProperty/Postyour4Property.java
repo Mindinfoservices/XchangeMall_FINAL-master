@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -43,28 +44,32 @@ import java.util.Locale;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.OpenMainActivity;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.checkData;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.saveDatatoLocal;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.activities.main.MainActivity.iscatChecked;
 import static com.mindinfo.xchangemall.xchangemall.activities.main.MainActivity.isdogChecked;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
 
-public class Postyour4Property extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
+public class Postyour4Property extends Fragment implements View.OnClickListener {
 
     public static Typeface face;
     ArrayList<String> imageSet = new ArrayList<String>();
     ArrayList<String> categoryids = new ArrayList<String>();
     Context context;
     private Button next_btn,cat_TextView;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView, currencyTV;
+
+    private TextView currencyTV;
     private ImageButton back_arrowImage;
     private EditText propertyDescEditText, unitsEditText, priceEditText, sizeEditText, bathroomEditText;
     //Fragment Manager
     private FragmentManager fm;
     private String sub_cat_id = "", MainCatType;
-    private SliderLayout imageSlider;
     private CheckBox dog_check, cat_check;
+    private AppCompatSpinner spinnerRent;
+    private String property_type="";
+    String rent_ext = "";
 
     @Nullable
     @Override
@@ -76,19 +81,15 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
         face = Typeface.createFromAsset(getActivity().getApplicationContext().getAssets(),
                 "fonts/estre.ttf");
         fm = getActivity().getSupportFragmentManager();
-
         context = getActivity().getApplicationContext();
-        findItem(v);
-        getLocale(currencyTV);
-        onClickOnItem(v);
 
+        MainCatType = getData(getActivity().getApplicationContext(), "pcat_id", "");
 
         Bundle bundle = this.getArguments();
         if (bundle != null)
         {
             sub_cat_id = bundle.getString("sub_cat_id");
             MainCatType = bundle.getString("MainCatType");
-//            Toast.makeText(getActivity(), MainCatType, Toast.LENGTH_SHORT).show();
 
             imageSet = bundle.getStringArrayList("imageSet");
             categoryids = bundle.getStringArrayList("categories");
@@ -96,43 +97,25 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
             System.out.println("********** selected p cat id ****** " + MainCatType);
             System.out.println("********** selected  cat id ****** " + categoryids);
 
-
         }
-        MainCatType = getData(getActivity().getApplicationContext(), "pcat_id", "");
+
+        findItem(v);
+        getLocale(currencyTV);
+        onClickOnItem(v);
 
         System.out.println("********** selected p cat id saved ****** " + MainCatType);
 
         if (MainCatType.equals("101"))
-            cat_TextView.setText("For Sale");
-        else if (MainCatType.equals("102"))
-            cat_TextView.setText("Property Rent");
+            cat_TextView.setText(R.string.for_sale);
+        else if (MainCatType.equals("102")) {
+            spinnerRent.setVisibility(View.VISIBLE);
+            cat_TextView.setText(R.string.property_rentals);
+        }
 
         else if (MainCatType.equals("272"))
-            cat_TextView.setText("Property Sale");
-
-
-        HashMap<String, File> url_maps = new HashMap<String, File>();
-
-        for (int i = 0; i < imageSet.size(); i++) {
-            url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-        }
-        for (String name : url_maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", name);
-
-            imageSlider.addSlider(textSliderView);
+        {
+            spinnerRent.setVisibility(View.GONE);
+            cat_TextView.setText(R.string.property_for_sale);
         }
 
 
@@ -167,8 +150,8 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
                 checkData("title_data", propertyDescEditText, context);
                 checkData("desc_data", unitsEditText, context);
                 checkData("price_data", priceEditText, context);
-                checkData("currency_data", sizeEditText, context);
-                checkData("size_data", bathroomEditText, context);
+                checkData("bathroom_data", bathroomEditText, context);
+                checkData("size_data", sizeEditText, context);
             }
         }
     }
@@ -176,10 +159,10 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
     //finditems
     private void findItem(View v) {
         final NestedScrollView scrollview = (NestedScrollView) v.findViewById(R.id.scroll_view);
-        imageSlider = (SliderLayout) v.findViewById(R.id.slider);
+
+        spinnerRent = (AppCompatSpinner) v.findViewById(R.id.spinnerSalary);
+
         next_btn = (Button) v.findViewById(R.id.next_btn);
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
 
         currencyTV = (TextView) v.findViewById(R.id.currencyTV);
         back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
@@ -193,7 +176,7 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
         cat_check = (CheckBox) v.findViewById(R.id.cat_checked);
         cat_TextView = (Button) v.findViewById(R.id.cat_TextView);
 
-        pageNo_textView.setText("4of7");
+        pageNo_textView.setText(R.string.page4);
 
         next_btn.setTypeface(face);
         propertyDescEditText.setTypeface(face);
@@ -251,6 +234,8 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next_btn:
+
+
                 if (propertyDescEditText.getText().length() == 0) {
                     Toast.makeText(getActivity(), "Enter Property Description", Toast.LENGTH_SHORT).show();
                     return;
@@ -267,13 +252,19 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
                     Toast.makeText(getActivity(), "Enter Washroom units", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if ((spinnerRent.getVisibility()==View.VISIBLE))
+                {
+                    rent_ext = spinnerRent.getSelectedItem().toString();
+                    if (rent_ext.equalsIgnoreCase("select") || rent_ext.length() < 0) {
+                        Toast.makeText(getActivity(), "Select rental type", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-
+                }
                 saveData(getActivity().getApplicationContext(), "first_entry", "false");
 
                 JSONObject propObj = new JSONObject();
                 try {
-
 
                     String unit = unitsEditText.getText().toString();
                     String desc = propertyDescEditText.getText().toString();
@@ -281,20 +272,18 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
                     String size = sizeEditText.getText().toString();
                     String b_unit = bathroomEditText.getText().toString();
 
+                    propObj.put("rent_ext", rent_ext);
                     propObj.put("room_unit", unit);
                     propObj.put("property_desc", desc);
-                    propObj.put("property_price", price);
+                    propObj.put("property_price", price+rent_ext);
                     propObj.put("prop_size", size);
                     propObj.put("bathroom_unit", b_unit);
-
                     System.out.println("** prop obj in 4 frag *****" + propObj);
                     saveData(getActivity().getApplicationContext(), "prop_obj", propObj.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
 
                 }
-
-
                 setCheckBoxData();
 
                 System.out.println("==============dogchecked================= " + isdogChecked);
@@ -309,7 +298,7 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
 
                 Postyour5Add postyour4add = new Postyour5Add();
                 postyour4add.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.allCategeries, postyour4add).addToBackStack(null).commit();
+                fm.beginTransaction().replace(R.id.allCategeriesIN, postyour4add).addToBackStack(null).commit();
 
                 break;
 
@@ -361,8 +350,8 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
         saveDatatoLocal("title_data", propertyDescEditText, context);
         saveDatatoLocal("desc_data", unitsEditText, context);
         saveDatatoLocal("price_data", priceEditText, context);
-        saveDatatoLocal("currency_data", sizeEditText, context);
-        saveDatatoLocal("size_data", bathroomEditText, context);
+        saveDatatoLocal("bathroom_data", bathroomEditText, context);
+        saveDatatoLocal("size_data", sizeEditText, context);
     }
 
     private void setCheckBoxData()
@@ -385,9 +374,4 @@ public class Postyour4Property extends Fragment implements View.OnClickListener,
         }
     }
 
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-        Toast.makeText(getActivity().getApplicationContext(), "you clicked on " + slider.getDescription(), Toast.LENGTH_LONG).show();
-
-    }
 }

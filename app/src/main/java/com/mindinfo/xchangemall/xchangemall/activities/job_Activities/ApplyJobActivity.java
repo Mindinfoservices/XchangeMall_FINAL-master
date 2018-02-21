@@ -761,6 +761,7 @@ public class ApplyJobActivity extends AppCompatActivity implements View.OnClickL
         getEntereData();
 
         String em = emailEt.getText().toString();
+        email=em;
         String empatt = "^[a-zA-Z0-9_.]+@[a-zA-Z]+\\.[a-zA-Z]+$";
         boolean b4 = isMatch(em, empatt);
 

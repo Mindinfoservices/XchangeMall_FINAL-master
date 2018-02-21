@@ -1,53 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
  <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbackground"
+   android:background="@color/white"
     android:clickable="true"
     android:focusable="true">
+
     <LinearLayout
-        android:id="@+id/header"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-    <include
-        layout="@layout/postyouaddheader"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/imagelay"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/header"
-        android:background="@color/black"
-        >
-
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            custom:auto_cycle="true"
-            custom:indicator_visibility="visible"
-            custom:pager_animation="Accordion"
-            custom:pager_animation_span="1100" />
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/btn_lay"
-        android:layout_below="@id/imagelay"
-        android:layout_gravity="center|top"
         android:background="@drawable/item_shadow_bg"
         android:orientation="vertical"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        >
+        android:paddingRight="10dp">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

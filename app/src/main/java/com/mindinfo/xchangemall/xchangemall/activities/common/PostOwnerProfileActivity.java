@@ -118,7 +118,8 @@ public class PostOwnerProfileActivity extends AppCompatActivity implements OnMap
                 if (mapMarker != null)
                     mapMarker.remove();
                 LatLng post_loc;
-                if (item_lat!=0 && item_lng!=0) {
+                if (item_lat!=0 && item_lng!=0)
+                {
                     post_loc = new LatLng(item_lat, item_lng);
                 }
                 else

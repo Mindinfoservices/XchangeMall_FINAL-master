@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,8 @@ import static com.mindinfo.xchangemall.xchangemall.activities.main.SplashScreen.
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
-public class ApplyForRental extends AppCompatActivity {
+public class ApplyForRental extends AppCompatActivity
+{
 
     private TextView tvfullname, tvphone, tvemail, tvrenatlhead, tvsettinghead, tvmovein, tvrenters, tvpets, tvsmokers, tvincome, tvcredit, tvmovingFrom,
             tvworkplace, tvjobtitle, tvalways,currencyTV,rightTV;
@@ -53,6 +55,7 @@ public class ApplyForRental extends AppCompatActivity {
     private Button requesst_btn;
     private ImageView back_btn;
     private ScrollView scrollview;
+    private LinearLayout formLay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,7 @@ public class ApplyForRental extends AppCompatActivity {
         requesst_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                setData();
+                getEntereData();
                 validateForm();
             }
         });
@@ -179,6 +182,7 @@ public class ApplyForRental extends AppCompatActivity {
         requesst_btn = (Button) findViewById(R.id.send_Request_btn);
         back_btn = (ImageView) findViewById(R.id.back_btn);
         scrollview=(ScrollView)findViewById(R.id.scrollview);
+        formLay=(LinearLayout) findViewById(R.id.formLay);
 
 
         pageTitleTV.setText("Application Form");
@@ -242,20 +246,22 @@ public class ApplyForRental extends AppCompatActivity {
     private void validateForm() {
 
         String em = etemail.getText().toString();
-        String empatt = "^[a-zA-Z0-9_.]+@[a-zA-Z]+\\.[a-zA-Z]+$";
+        email=em;
+        String empatt =  "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
         boolean b4 = isMatch(em, empatt);
 
         if (fullname.length() == 0) {
-            etfullname.setError("Field Required");
+            etfullname.setError("Name Required");
             etfullname.requestFocus();
+
         }
 
        else if (phone.length() == 0) {
-            etphone.setError("Field Required");
+            etphone.setError("Mobile Required");
             etphone.requestFocus();
         }
 
-        else if (email.length() == 0 || !b4) {
+        else if (em.length() == 0 || !b4) {
             etemail.setError("Invalid Email");
             etemail.requestFocus();
         }
@@ -476,20 +482,5 @@ public class ApplyForRental extends AppCompatActivity {
 
     }
 
-
-//    private void getEntereData() {
-//        saveDatatoLocal("rental_fullname",etfullname,getApplicationContext());
-//        saveDatatoLocal("rental_number",etphone,getApplicationContext());
-//        saveDatatoLocal("rental_email",etemail,getApplicationContext());
-//        saveDatatoLocal("rental_movein",etmovein,getApplicationContext());
-//        saveDatatoLocal("rental_count",etrenters,getApplicationContext());
-//        saveDatatoLocal("pets",etpets,getApplicationContext());
-//        saveDatatoLocal("smoking",etsmokers,getApplicationContext());
-//        saveDatatoLocal("income",etincome,getApplicationContext());
-//        saveDatatoLocal("credit_range",etcredit,getApplicationContext());
-//        saveDatatoLocal("rental_movingfrom",etmovingFrom,getApplicationContext());
-//        saveDatatoLocal("rental_workplace",etworkplace,getApplicationContext());
-//        saveDatatoLocal("rental_jobtitle",etjobtitle,getApplicationContext());
-//    }
 
 }

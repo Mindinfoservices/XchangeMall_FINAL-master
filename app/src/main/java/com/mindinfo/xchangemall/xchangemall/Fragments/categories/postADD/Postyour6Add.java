@@ -35,13 +35,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour4Add.face;
 import static com.mindinfo.xchangemall.xchangemall.other.GeocodingLocation.getAddressFromLatlng;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 
 
 
-public class Postyour6Add extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
+public class Postyour6Add extends Fragment implements View.OnClickListener {
     private static final int PLACE_PICKER_REQUEST = 12;
     private static View view;
     ArrayList<String> imageSet = new ArrayList<String>();
@@ -51,20 +53,19 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
     String obj;
     SupportMapFragment mapFragment;
     //next_btn
-    private Button next_btn,saveLocation;
+    private Button next_btn, saveLocation;
     private TextView inputLocationEditText;
-    private String sub_cat_id = "",MainCatType,postTitle,postDes,postPrice,postSize,postCondition,privacy_str,phone_str, Existence_str,contName_str,language_str;
+    private String sub_cat_id = "", MainCatType, postTitle, postDes, postPrice, postSize, postCondition, privacy_str, phone_str, Existence_str, contName_str, language_str;
     //Fragment Manager
     private FragmentManager fm;
     private GoogleMap mMap;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView,headercategory ;
+    private TextView headercategory;
     private ImageButton back_arrowImage;
     private String pcat_name;
-    private SliderLayout imageSlider;
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
@@ -75,7 +76,6 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
         } catch (InflateException e) {
         /* map is already there, just return view as it is */
         }
-//        getActivity().startService(new Intent(getActivity().getApplicationContext(), MyService.class));
 
 
         fm = getActivity().getSupportFragmentManager();
@@ -85,24 +85,24 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-                if (location_marker !=null){
+                if (location_marker != null) {
                     location_marker.remove();
                 }
-                lat = getData(getActivity().getApplicationContext(),"userLat","22.52365");
-                lng = getData(getActivity().getApplicationContext(),"userLong","75.265552");
+                lat = getData(getActivity().getApplicationContext(), "userLat", "22.52365");
+                lng = getData(getActivity().getApplicationContext(), "userLong", "75.265552");
 
-                    double latitude = Double.parseDouble(lat);
-                    double longitide = Double.parseDouble(lng);
-                    LatLng latLng = new LatLng(latitude, longitide);
+                double latitude = Double.parseDouble(lat);
+                double longitide = Double.parseDouble(lng);
+                LatLng latLng = new LatLng(latitude, longitide);
 
-                    String full_address = getAddressFromLatlng(latLng, getActivity().getApplicationContext(), 1);
+                String full_address = getAddressFromLatlng(latLng, getActivity().getApplicationContext(), 1);
 
-                    inputLocationEditText.setText(full_address);
+                inputLocationEditText.setText(full_address);
 
-                    location_marker = mMap.addMarker(new MarkerOptions().position(latLng));
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(latLng).tilt(45).bearing(45).zoom((float) 18.5).build();
-                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                location_marker = mMap.addMarker(new MarkerOptions().position(latLng));
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(latLng).tilt(45).bearing(45).zoom((float) 18.5).build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             }
         });
@@ -110,10 +110,9 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
 
         onClickonItem(view);
 
-        MainCatType=getData(getActivity().getApplicationContext(),"pcat_id","");
+        MainCatType = getData(getActivity().getApplicationContext(), "pcat_id", "");
         Bundle bundle = this.getArguments();
-        if(bundle!=null)
-        {
+        if (bundle != null) {
             //bussinessobj
             sub_cat_id = bundle.getString("sub_cat_id");
             pcat_name = bundle.getString("pcat_name");
@@ -124,8 +123,8 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
             Existence_str = bundle.getString("Existence_str");
             contName_str = bundle.getString("contName_str");
             language_str = bundle.getString("language_str");
-            if (!MainCatType.equals("101"))
-            {
+
+            if (MainCatType.equals("104")) {
 
                 postTitle = bundle.getString("postTitle");
                 postDes = bundle.getString("postDes");
@@ -133,65 +132,30 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
                 postSize = bundle.getString("postSize");
                 postCondition = bundle.getString("postCondition");
                 categoryids = bundle.getStringArrayList("selectedcategories");
+                System.out.println("============ post details at frfag 6 ********");
+                System.out.println(postTitle + " title");
+                System.out.println(postDes + " desc");
+                System.out.println(postPrice + " price");
+                System.out.println(postSize + " size");
+                System.out.println(postCondition + " condi");
+            } else if (MainCatType.equals("102") || MainCatType.equals("272")) {
+                obj = bundle.getString("prop_obj");
+                categoryids = bundle.getStringArrayList("selectedcategories");
+            } else {
+                obj = bundle.getString("bussinessobj");
             }
-            else if(MainCatType.equals("102"))
-            {
-                 obj = bundle.getString("prop_obj");
-                 categoryids = bundle.getStringArrayList("selectedcategories");
-
-
-            }
-
-            else {
-                 obj = bundle.getString("bussinessobj");
-            }
-
-            HashMap<String, File> url_maps = new HashMap<String, File>();
-
-            for (int i = 0; i < imageSet.size(); i++) {
-                url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-            }
-            for (String name : url_maps.keySet()) {
-                TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-                // initialize a SliderLayout
-                textSliderView
-                        .description(name)
-                        .image(url_maps.get(name))
-                        .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                        .setOnSliderClickListener(this);
-
-                //add your extra information
-                textSliderView.bundle(new Bundle());
-
-                textSliderView.getBundle()
-                        .putString("extra", name);
-                imageSlider.stopAutoCycle();
-                imageSlider.clearAnimation();
-                imageSlider.addSlider(textSliderView);
-            }
-
-
-
-
         }
 
 
         return view;
     }
 
-   //findItem
-    private void findItems(View v)
-    {
-        imageSlider = (SliderLayout)v.findViewById(R.id.slider);
+    //findItem
+    private void findItems(View v) {
         next_btn = (Button) v.findViewById(R.id.next_btn);
         saveLocation = (Button) v.findViewById(R.id.saveLocation);
         inputLocationEditText = (TextView) v.findViewById(R.id.inputLocationEditText);
 
-
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
         back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
         headercategory = (TextView) v.findViewById(R.id.headercategory);
 
@@ -205,9 +169,7 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
     }
 
 
-
-    private void onClickonItem(View v)
-    {
+    private void onClickonItem(View v) {
         back_arrowImage.setOnClickListener(this);
         cross_imageView.setOnClickListener(this);
         next_btn.setOnClickListener(this);
@@ -218,8 +180,7 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.back_arrowImage:
                 getActivity().onBackPressed();
                 break;
@@ -227,42 +188,38 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
                 OpenMainActivity();
                 break;
 
-                case R.id.inputLocationEditText:
-                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            case R.id.inputLocationEditText:
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
-                    try {
-                        startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case R.id.next_btn:
-                if(lat==null||lng==null)
-                {
+                if (lat == null || lng == null) {
                     Toast.makeText(getActivity(), "please get location", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 Bundle bundle = new Bundle();
-                if (MainCatType.equals("101"))
-                {
+                if (MainCatType.equals("101")) {
 
-                    bundle.putString("bussinessobj",obj);
-                    bundle.putString("sub_cat_id",bundle.getString(sub_cat_id));
-
-
-                }
-
-                else if (MainCatType.equals("102"))
-                {
-
-                    bundle.putString("prop_obj",obj);
-                    bundle.putString("sub_cat_id",bundle.getString(sub_cat_id));
+                    bundle.putString("bussinessobj", obj);
+                    bundle.putString("sub_cat_id", bundle.getString(sub_cat_id));
 
 
-                }
-                else {
+                } else if (MainCatType.equals("102") || MainCatType.equals("272")) {
+
+                    System.out.println("========= prop obj ==");
+                    System.out.println(obj);
+                    bundle.putString("prop_obj", obj);
+                    bundle.putString("sub_cat_id", bundle.getString(sub_cat_id));
+
+
+                } else {
 
                     bundle.putString("pcat_name", pcat_name);
                     bundle.putString("postTitle", postTitle);
@@ -272,47 +229,43 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
                     bundle.putString("postCondition", postCondition);
                     bundle.putStringArrayList("selectedcategories", categoryids);
                 }
-                bundle.putString("privacy_str",privacy_str);
-                bundle.putString("phone_str",phone_str);
-                bundle.putString("Existence_str",Existence_str);
-                bundle.putString("contName_str",contName_str);
-                bundle.putString("language_str",language_str);
 
-                bundle.putString("MainCatType",MainCatType);
-                bundle.putStringArrayList("imageSet",imageSet);
+                bundle.putString("privacy_str", privacy_str);
+                bundle.putString("phone_str", phone_str);
+                bundle.putString("Existence_str", Existence_str);
+                bundle.putString("contName_str", contName_str);
+                bundle.putString("language_str", language_str);
+
+                bundle.putString("MainCatType", MainCatType);
+                bundle.putStringArrayList("imageSet", imageSet);
                 bundle.putString("lat", lat);
                 bundle.putString("lng", lng);
-                bundle.putString("completeaddress",inputLocationEditText.getText().toString());
+                bundle.putString("completeaddress", inputLocationEditText.getText().toString());
                 Postyour7Add postyour7add = new Postyour7Add();
                 postyour7add.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.allCategeries,postyour7add).addToBackStack(null).commit();
+                fm.beginTransaction().replace(R.id.allCategeriesIN, postyour7add).addToBackStack(null).commit();
 
                 break;
 
             case R.id.saveLocation:
-                if(inputLocationEditText.getText().length() == 0)
-                {
+                if (inputLocationEditText.getText().length() == 0) {
                     Toast.makeText(getActivity(), "Enter your zip code", Toast.LENGTH_SHORT).show();
                     return;
+                } else {
+                    ClickonSavelocation(inputLocationEditText.getText().toString());
                 }
-                else
-                    {
-                        ClickonSavelocation(inputLocationEditText.getText().toString());
-                    }
 
                 break;
         }
     }
 
 
-    private void ClickonSavelocation(String zipStr)
-    {
-      mMap.clear();
+    private void ClickonSavelocation(String zipStr) {
+        mMap.clear();
     }
 
 
-    private void OpenMainActivity()
-    {
+    private void OpenMainActivity() {
         Intent i = new Intent(getActivity(), MainActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -333,22 +286,17 @@ public class Postyour6Add extends Fragment implements View.OnClickListener, Base
 
 //                String toastMsg = String.format("Place: %s", place.getName());
 
-                String new_location = getAddressFromLatlng(location, getActivity().getApplicationContext(),1);
+                String new_location = getAddressFromLatlng(location, getActivity().getApplicationContext(), 1);
                 inputLocationEditText.setText("  " + new_location);
-                location_marker=   mMap.addMarker(new MarkerOptions().position
-                        (new LatLng(location.latitude,location.longitude)));
+                location_marker = mMap.addMarker(new MarkerOptions().position
+                        (new LatLng(location.latitude, location.longitude)));
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.latitude,location.longitude)).tilt(45).bearing(45).zoom((float) 18.5).build();
+                        .target(new LatLng(location.latitude, location.longitude)).tilt(45).bearing(45).zoom((float) 18.5).build();
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 
             }
         }
-    }
-
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-
     }
 }
 

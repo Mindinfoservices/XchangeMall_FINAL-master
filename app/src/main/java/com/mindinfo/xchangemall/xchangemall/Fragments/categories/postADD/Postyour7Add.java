@@ -31,6 +31,8 @@ import java.util.HashMap;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.addJobs;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.addProperty;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.addpost;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postJob.PostyourJob.job_exp;
 import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postJob.PostyourJob.job_responsbitity;
 import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postJob.PostyourJob.job_salary;
@@ -39,7 +41,7 @@ import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
 
-public class Postyour7Add extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
+public class Postyour7Add extends Fragment implements View.OnClickListener{
 
     static ArrayList<String> imageSet = new ArrayList<String>();
     ArrayList<String> categoryids ;
@@ -54,10 +56,9 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
             postSize = "", postCondition, privacy_str, phone_str = "",
             Existence_str, contName_str = "", language_str = "", lat = "", lng = "", zipcode = "";
     private CheckBox checkboxFree, checkboxPaid, checkboxAutoRenew;
-    private ImageView cross_imageView, back_arrowImage;
-    private TextView pageNo_textView;
+    private ImageView back_arrowImage;
+
     private String pcat_name;
-    private SliderLayout imageSlider;
 
     @Nullable
     @Override
@@ -75,7 +76,8 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
         OnClick(v);
        categoryids = new ArrayList<String>();
         Bundle bundle = this.getArguments();
-        if (bundle != null) {
+        if (bundle != null)
+        {
             sub_cat_id = bundle.getString("sub_cat_id");
             address = bundle.getString("completeaddress");
             privacy_str = bundle.getString("privacy_str");
@@ -86,7 +88,7 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
             imageSet = bundle.getStringArrayList("imageSet");
             postTitle = bundle.getString("postTitle");
 
-            if (!MainCatType.equals("101")) {
+            if (MainCatType.equals("104")) {
 
                 postDes = bundle.getString("postDes");
                 postPrice = bundle.getString("postPrice");
@@ -102,6 +104,8 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
                 System.out.println("**** **** MAin Cat in if else  ******* " + MainCatType);
 
                 obj = bundle.getString("prop_obj");
+                System.out.println("========= prop obj ==");
+                System.out.println(obj);
                 try {
                     postOBj = new JSONObject(obj);
                     System.out.println("** prop obj frag 7 ****");
@@ -128,32 +132,6 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
             System.out.println(lng);
 
 
-            HashMap<String, File> url_maps = new HashMap<String, File>();
-
-            for (int i = 0; i < imageSet.size(); i++) {
-                url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-            }
-            for (String name : url_maps.keySet()) {
-                TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-                // initialize a SliderLayout
-                textSliderView
-                        .description(name)
-                        .image(url_maps.get(name))
-                        .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                        .setOnSliderClickListener(this);
-
-                //add your extra information
-                textSliderView.bundle(new Bundle());
-                textSliderView.getBundle()
-                        .putString("extra", name);
-                imageSlider.stopAutoCycle();
-                imageSlider.clearAnimation();
-                imageSlider.addSlider(textSliderView);
-            }
-
-
         }
 
         return v;
@@ -161,15 +139,11 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
 
     //find item
     private void finditem(View v) {
-        imageSlider = (SliderLayout) v.findViewById(R.id.slider);
-
         next_btn = (TextView) v.findViewById(R.id.next_btn);
         checkboxFree = (CheckBox) v.findViewById(R.id.checkboxFree);
         checkboxPaid = (CheckBox) v.findViewById(R.id.checkboxPaid);
         checkboxAutoRenew = (CheckBox) v.findViewById(R.id.checkboxAutoRenew);
 
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
         back_arrowImage = (ImageView) v.findViewById(R.id.back_arrowImage);
         pageNo_textView.setText("7of7");
     }
@@ -263,7 +237,7 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
 
                         addpost(getActivity(), user_id, contName_str, postTitle, postDes, postPrice, address, phone_str,
                                 lat, lng, categoryids, MainCatType,
-                                "en", imageSet);
+                                "en", imageSet,postSize,postCondition);
                         break;
 
 
@@ -282,16 +256,13 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
                                 System.out.println("** adding property ********");
 
                                 addProperty(getActivity(), user_id, contName_str, postTitle, prop_desc, address, phone_str, lat, lng,
-                                        categoryids, MainCatType, "en", imageSet,washroom_unit,roomUnit,"yes",
-                                        "no",prop_price,prop_size);
+                                        categoryids, MainCatType, "en", imageSet,washroom_unit,roomUnit,prop_price,prop_size);
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
                             }
 
                         break;
-
-
                             case "272":
                             try {
                                 String val = getData(getActivity().getApplicationContext(),"prop_obj","");
@@ -307,8 +278,7 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
                                 System.out.println("** adding property ********");
 
                                 addProperty(getActivity(), user_id, contName_str, postTitle, prop_desc, address, phone_str, lat, lng,
-                                        categoryids, MainCatType, "en", imageSet,washroom_unit,roomUnit,"yes",
-                                        "no",prop_price,prop_size);
+                                        categoryids, MainCatType, "en", imageSet,washroom_unit,roomUnit,prop_price,prop_size);
                             } catch (JSONException e) {
                                 e.printStackTrace();
 
@@ -317,51 +287,13 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
                         break;
 
                     case "101":
-//                        try {
-//
-//                            JSONObject joboj = new JSONObject(obj);
-//                            String bussiness_name, business_about, social_media_link, website_link, hours_of_operation;
-//
-//                            bussiness_name = joboj.getString("business_name");
-//                            business_about = joboj.getString("about_business");
-//                            social_media_link = joboj.getString("social_media_link");
-//                            website_link = joboj.getString("website_link");
-//                            hours_of_operation = joboj.getString("hours_of_operation");
-//
-//                            NetworkClass.postImage2(getActivity(),
-//                                    user_id,
-//                                    contName_str,
-//                                    "",
-//                                    address,
-//                                    phone_str,
-//                                    "",
-//                                    "",
-//                                    "",
-//                                    "",
-//                                    lat,
-//                                    lng,
-//                                    sub_cat_id,
-//                                    MainCatType,
-//                                    bussiness_name,
-//                                    business_about,
-//                                    social_media_link, website_link,
-//                                    hours_of_operation,
-//                                    "en");
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
+
                         break;
                 }
 
         }
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
 
     private void OpenMainActivity() {
         Intent i = new Intent(getActivity(), MainActivity.class);
@@ -370,107 +302,5 @@ public class Postyour7Add extends Fragment implements View.OnClickListener, Base
         getActivity().startActivity(i);
     }
 
-
-//    public static void addpost(final Context context, final String user_id, final String contact_person, final String title, final String description
-//            , final String price, final String address, final String phone_no
-//            , final String latitude, final String longitude,
-//                               final ArrayList<String> category_array, final String parent_category,
-//                               final String lng, ArrayList<String> imageSet)
-//    {
-//
-//        final AsyncHttpClient client = new AsyncHttpClient();
-//        final RequestParams params = new RequestParams();
-//        final ProgressDialog ringProgressDialog;
-//        ringProgressDialog = ProgressDialog.show(context, "Please wait ...", "upload process", true);
-//        ringProgressDialog.setCancelable(false);
-//
-//        String category = category_array.toString().replace("[", "").replace("]", "")
-//                .replace(", ", ",");
-//
-//        String contact_by = getData(context,"contact_by","");
-//        String currency_code = getData(context,"currency_code","");
-//
-//
-//            params.put("contact_by", contact_by);
-//            params.put("title", title);
-//            params.put("user_id", user_id);
-//            params.put("description", description);
-//            params.put("price", price);
-//            params.put("address", address);
-//            params.put("phone_no", phone_no);
-//            params.put("latitude", latitude);
-//            params.put("lng", lng);
-//            params.put("category", category);
-//            params.put("parent_category", parent_category);
-//            params.put("contact_person", contact_person);
-//        params.put("longitude", longitude);
-//        params.put("currency_code", currency_code);
-//
-//            System.out.println("*************** featured image data ***********");
-//
-//        try {
-//            for (int i = 0; i< Postyour7Add.imageSet.size(); i++)
-//            {
-//                String result = getData(context,"item_img"+i,"");
-//
-//                params.put("featured_img"+(i+1),new File(result));
-//
-//               NullData(context, "item_img"+i);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//
-//        }
-//
-//        System.out.println(params);
-//
-//        client.post(BASE_URL_NEW+"addpost", params, new JsonHttpResponseHandler() {
-//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//
-//                    ringProgressDialog.dismiss();
-//                    System.out.println("******** response  add post *******");
-//                    System.out.println(response);
-//
-//                    try {
-//                        String data = response.getString("status");
-//                        if (data.equals("1")) {
-//                            Toast.makeText(context,"Post Added ",Toast.LENGTH_LONG).show();
-//                            context.startActivity(new Intent(context, MainActivity.class));
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(context,response.getString("message"),Toast.LENGTH_LONG).show();
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                    System.out.println("******** response  add post *******");
-//                    System.out.println(errorResponse);
-//                    ringProgressDialog.dismiss();
-//                    Toast.makeText(context,"Internal Server Error",Toast.LENGTH_LONG).show();
-//
-//
-//                }
-//
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                    ringProgressDialog.dismiss();
-//                    System.out.println("******** response  add post *******");
-//                    System.out.println(responseString);
-//
-//                }
-//
-//            });
-//
-//
-//    }
-
-
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-
-    }
 }
 

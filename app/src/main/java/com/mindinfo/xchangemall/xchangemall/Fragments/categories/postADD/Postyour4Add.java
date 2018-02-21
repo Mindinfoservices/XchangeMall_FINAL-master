@@ -35,25 +35,25 @@ import java.util.Locale;
 
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.checkData;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.saveDatatoLocal;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
 
-public class Postyour4Add extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
+public class Postyour4Add extends Fragment implements View.OnClickListener{
 
     public static Typeface face;
     ArrayList<String> imageSet = new ArrayList<String>();
     ArrayList<String> categoryids = new ArrayList<String>();
     Context context;
     private Button next_btn;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView, currencyTV;
+    private TextView  currencyTV;
     private ImageButton back_arrowImage;
     private EditText postTitleEditText, postDescriptionEditText, priceEditText, sizeEditText, conditionEditText;
     //Fragment Manager
     private FragmentManager fm;
     private String sub_cat_id = "", MainCatType;
-    private SliderLayout imageSlider;
 
     @Nullable
     @Override
@@ -75,51 +75,19 @@ public class Postyour4Add extends Fragment implements View.OnClickListener, Base
         if (bundle != null) {
             sub_cat_id = bundle.getString("sub_cat_id");
             MainCatType = bundle.getString("MainCatType");
-//            Toast.makeText(getActivity(), MainCatType, Toast.LENGTH_SHORT).show();
-
             imageSet = bundle.getStringArrayList("imageSet");
             categoryids = bundle.getStringArrayList("categories");
 
 
         }
         MainCatType=getData(getActivity().getApplicationContext(),"pcat_id","");
-        HashMap<String, File> url_maps = new HashMap<String, File>();
-
-        for (int i = 0; i < imageSet.size(); i++) {
-            url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-        }
-        for (String name : url_maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", name);
-            imageSlider.stopAutoCycle();
-            imageSlider.clearAnimation();
-
-            imageSlider.addSlider(textSliderView);
-        }
-
-
         return v;
     }
 
     //finditems
     private void findItem(View v) {
-        imageSlider = (SliderLayout) v.findViewById(R.id.slider);
-        next_btn = (Button) v.findViewById(R.id.next_btn);
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
 
+        next_btn = (Button) v.findViewById(R.id.next_btn);
         currencyTV = (TextView) v.findViewById(R.id.currencyTV);
         back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
 
@@ -166,8 +134,8 @@ public class Postyour4Add extends Fragment implements View.OnClickListener, Base
                 checkData("title_data", postTitleEditText, context);
                 checkData("desc_data", postDescriptionEditText, context);
                 checkData("price_data", priceEditText, context);
-                checkData("currency_data", sizeEditText, context);
-                checkData("size_data", conditionEditText, context);
+                checkData("condition_data", conditionEditText, context);
+                checkData("size_data", sizeEditText, context);
             }
         }
 //        checkData("condition_data",currencyTV);
@@ -217,9 +185,10 @@ public class Postyour4Add extends Fragment implements View.OnClickListener, Base
                 bundle.putString("MainCatType", MainCatType);
                 bundle.putStringArrayList("selectedcategories", categoryids);
                 bundle.putString("pcat_name", "For Sale");
-                Postyour5Add postyour4add = new Postyour5Add();
-                postyour4add.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.allCategeries, postyour4add).addToBackStack(null).commit();
+
+                Postyour5Add postyour5add = new Postyour5Add();
+                postyour5add.setArguments(bundle);
+                fm.beginTransaction().replace(R.id.allCategeriesIN, postyour5add).addToBackStack(null).commit();
 
                 break;
 
@@ -270,8 +239,8 @@ public class Postyour4Add extends Fragment implements View.OnClickListener, Base
         saveDatatoLocal("title_data", postTitleEditText,context);
         saveDatatoLocal("desc_data", postDescriptionEditText,context);
         saveDatatoLocal("price_data", priceEditText,context);
-        saveDatatoLocal("currency_data", sizeEditText,context);
-        saveDatatoLocal("size_data", conditionEditText,context);
+        saveDatatoLocal("condition_data", conditionEditText,context);
+        saveDatatoLocal("size_data", sizeEditText,context);
     }
 
     private void OpenMainActivity() {
@@ -281,8 +250,4 @@ public class Postyour4Add extends Fragment implements View.OnClickListener, Base
         getActivity().startActivity(i);
     }
 
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-
-    }
 }

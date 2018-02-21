@@ -12,7 +12,6 @@
         android:layout_alignParentTop="true"
         android:background="#333333">
 
-
         <ImageView
             android:id="@+id/back_arrowImage"
             android:layout_width="50dp"
@@ -77,6 +76,7 @@
                 android:layout_marginTop="150dp">
 
                 <RelativeLayout
+                    android:visibility="visible"
                     android:id="@+id/profile_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_toRightOf="@+id/job_typeTV"
                         android:text="$10/hour"
-                        android:textColor="@color/black"
+                        android:textColor="@android:color/holo_red_dark"
                         android:textSize="13sp" />
 
 
@@ -246,8 +246,9 @@
                         android:id="@+id/address_head_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/view1"
-                        android:layout_marginTop="10dp"
+                        android:layout_above="@+id/rating_layout"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
                         android:text="@string/address"
                         android:textColor="@color/black"
                         android:textSize="13sp"
@@ -291,7 +292,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="4.1 user review"
+                            android:text="@string/_4_1_user_review"
                             android:textSize="13sp" />
                     </LinearLayout>
 
@@ -311,12 +312,13 @@
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:text="@string/job_description"
-                        android:textColor="@color/black"
+                        android:textColor="@color/action_bar_colour"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/job_descTV"
+                        android:text="duties"
+                        android:id="@+id/job_dutiestv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/job_desc_head"
@@ -324,7 +326,73 @@
                         android:ellipsize="end"
                         android:maxLines="5"
                         android:padding="2dp"
-                        android:text="Job Description"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:text="exp"
+                        android:id="@+id/exptv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/job_dutiestv"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="5"
+                        android:padding="2dp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:visibility="gone"
+                        android:text="size"
+                        android:id="@+id/sizeTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/exptv"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="5"
+                        android:padding="2dp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:visibility="gone"
+                        android:text="catTv"
+                        android:id="@+id/catTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/sizeTV"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="5"
+                        android:padding="2dp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:visibility="gone"
+                        android:text="dogtv"
+                        android:id="@+id/dogTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/catTv"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="5"
+                        android:padding="2dp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:text="desc"
+                        android:id="@+id/job_descTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dogTv"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="5"
+                        android:padding="2dp"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
 

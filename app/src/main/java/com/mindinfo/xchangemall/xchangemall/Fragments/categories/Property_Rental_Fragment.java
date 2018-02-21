@@ -90,7 +90,7 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
     RelativeLayout catlog;
     Typeface face;
     String search_key = "", cat_id = "", sortby = "", type = "search", price_min = "", price_max = "",
-            country = "", city = "", latitude = "", longitude = "", pcat_id = "102", user_id = "";
+            country = "", city = "", latitude = "", longitude = "", pcat_id = "102", user_id = "",csv="";
     TextView cancel_btn, cameraIV, galleryIV, addimageHEaderTV;
     String lati = "0";
     String longi = "0";
@@ -131,20 +131,26 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
 
 
         bundle = getArguments();
-        if (bundle != null) {
-            pcat_id = "102";
-            cat_id = bundle.getString("subCatID", "");
-            if (isNetworkAvailable(getActivity().getApplicationContext()))
-                loadPost(user_id, "", country, city, type, "", pcat_id, cat_id, price_max, price_min, latitude, longitude);
-            else
-                Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
-        } else {
-            if (isNetworkAvailable(getActivity().getApplicationContext()))
-                loadPost(user_id, "", country, city, type, "", pcat_id, "",
-                        "", "", latitude, longitude);
-            else
-                Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
+        if (isNetworkAvailable(getActivity().getApplicationContext())) {
+            if (bundle != null) {
+                if (idarray.size()>0)
+                    idarray.clear();
+
+                cat_id = bundle.getString("subCatID", "");
+                csv=cat_id;
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
+            }
+            else {
+                if (idarray.size()>0)
+                    idarray.clear();
+
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv,
+                        price_max, price_min, latitude, longitude);
+
+            }
         }
+        else
+        Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
 
 
         refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_SMARTISAN);
@@ -154,8 +160,15 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadPost(user_id, "", country, city, type, "", pcat_id,
-                                "", "", "", latitude, longitude);
+                        search_key = ""; csv = ""; sortby = ""; type = "search"; price_min = ""; price_max = "";
+                        latitude = ""; longitude = ""; pcat_id = "102";
+                        currentLocation.setText("Current location");
+
+                        if (idarray.size()>0)
+                            idarray.clear();
+
+                        loadPost(user_id, search_key, country, city, type, sortby, pcat_id,
+                                csv, price_max, price_min, latitude, longitude);
 
                         refreshLayout.setRefreshing(false);
                     }
@@ -264,7 +277,8 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                     search_key = searchbox.getText().toString();
-                    loadPost(user_id, search_key, country, city, type, "", pcat_id, cat_id, "", "", latitude, longitude);
+                    loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv,
+                            price_max, price_min, latitude, longitude);
                     return true;
                 }
                 return false;
@@ -300,7 +314,9 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
 
             case R.id.mostRecentTextView:
                 catlog.setVisibility(View.GONE);
-                loadPost(user_id, "", country, city, type, "newFirst", pcat_id, cat_id, "", "", latitude, longitude);
+                sortby="newFirst";
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv,
+                        price_max, price_min, latitude, longitude);
                 break;
 
             case R.id.personal_top:
@@ -414,7 +430,8 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
                 price_min = String.valueOf(rangeSeekBar.getSelectedMinValue());
                 price_max = String.valueOf(rangeSeekBar.getSelectedMaxValue());
                 dialog.dismiss();
-                loadPost(user_id, "", country, city, type, "", pcat_id, cat_id, price_max, price_min, latitude, longitude);
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv,
+                        price_max, price_min, latitude, longitude);
 
 
             }
@@ -431,7 +448,7 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
         catlog.setVisibility(View.VISIBLE);
         final ArrayList<categories> arrayList = new ArrayList<>();
 
-        title_cat.setText(getResources().getString(R.string.for_sale));
+        title_cat.setText(getResources().getString(R.string.property_rentals));
         title_cat.setTypeface(face);
         MULTIPLEsELECTIONcATEGORY postadapter = new MULTIPLEsELECTIONcATEGORY(arrayList, getActivity());
         cat_sub_list_view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -454,7 +471,8 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
 
                 String csv = idarray.toString().replace("[", "").replace("]", "")
                         .replace(", ", ",");
-                loadPost(user_id, "", country, city, type, "", pcat_id, csv, "", "", latitude, longitude);
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv,
+                        price_max, price_min, latitude, longitude);
 
 
             }
@@ -720,22 +738,25 @@ public class Property_Rental_Fragment extends Fragment implements View.OnClickLi
                 String toastMsg = String.format("Place: %s", place.getName());
                 String new_location = getAddressFromLatlng(location, getActivity().getApplicationContext(), 0);
                 currentLocation.setText("  " + new_location);
-                loadPost(user_id, search_key, country, city, type, "", pcat_id, cat_id, price_max, price_min, latitude, longitude);
-                latitude = "";
-                longitude = "";
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, cat_id,
+                        price_max, price_min, latitude, longitude);
+
             }
         }
 
         if (requestCode == 01) {
-            postImageLay.setVisibility(View.GONE);
 
-            ArrayList<String> imageArray = new ArrayList<>();
-            System.out.println("********** image uri ****");
-            System.out.println(imageUri);
-            imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
-            saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+            if (resultCode== -1) {
+                postImageLay.setVisibility(View.GONE);
 
-            nextFragment(imageArray,str_image_arr);
+                ArrayList<String> imageArray = new ArrayList<>();
+                System.out.println("********** image uri ****");
+                System.out.println(imageUri);
+                imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+
+                nextFragment(imageArray, str_image_arr);
+            }
         }
 
 

@@ -75,27 +75,28 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
 
     private static final int PLACE_PICKER_REQUEST = 23;
     private static final int CAPTURE_IMAGES_FROM_CAMERA = 22;
-    public String str_image_arr[];
-
+    private String str_image_arr[];
+    private String csv ="";
     TextView noPostTv;
     EditText searchbox;
-    LinearLayout postImageLay;
-    FragmentManager fm;
+    private  LinearLayout postImageLay;
+    private  FragmentManager fm;
     RelativeLayout snackbarPosition;
-    int slider_max_price = 10000;
-    Typeface face;
-    String search_key = "", cat_id = "", sortby = "", type = "search", price_min = "", price_max = "",
+    private  int slider_max_price = 10000;
+    private Typeface face;
+    private String search_key = "", cat_id = "", sortby = "", type = "search", price_min = "", price_max = "",
             country = "", city = "", latitude = "", longitude = "", pcat_id = "104", user_id = "";
-    TextView cancel_btn, cameraIV, galleryIV, addimageHEaderTV;
-    Bundle bundle;
-    Button forsaleTV;
-    ProgressBar progressbar;
-    RelativeLayout catlog;
-    Button cancel_button;
-    Button confirm_btn;
-    ListView cat_sub_list_view;
-    TextView title_cat;
-    Uri imageUri;
+    private  TextView cancel_btn;
+    private TextView cameraIV;
+    private TextView galleryIV;
+    private Bundle bundle;
+    private ProgressBar progressbar;
+    private RelativeLayout catlog;
+    private Button cancel_button;
+    private Button confirm_btn;
+    private ListView cat_sub_list_view;
+    private TextView title_cat;
+    private Uri imageUri;
     private ListView recyclerViewItem;
     private ForSaleAdapter itemlistAdapter;
     private List<ItemsMain> itemList;
@@ -110,8 +111,8 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
     private TextView currentLocation, priceTextView, cat_TextView, mostRecentTextView;
     private int image_count_before;
     private boolean fromLocation;
-    private PullRefreshLayout refreshLayout;
-
+    private PullRefreshLayout refreshLayout,refreshLay2;
+    final ArrayList<categories> arrayList = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_itemmain_l1, null);
@@ -121,27 +122,35 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
 
         user_id = getData(getActivity().getApplicationContext(), "user_id", "");
         findbyview(v);
-        progressbar.setVisibility(View.GONE);
+
         addClickListner(v);
         fromLocation=false;
 
-        postImageLay.setVisibility(View.GONE);
-
-        Post_camera_icon.setOnClickListener(this);
 
 
         bundle = getArguments();
-        if (bundle != null) {
+        if (bundle != null)
+        {
             pcat_id = "104";
             cat_id = bundle.getString("subCatID", "");
-
-            if (isNetworkAvailable(getActivity().getApplicationContext()))
-                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
+            csv=cat_id;
+            if (isNetworkAvailable(getActivity().getApplicationContext())) {
+                if (idarray.size() > 0)
+                    idarray.clear();
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
+            }
             else
                 Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
-        } else {
-            if (isNetworkAvailable(getActivity().getApplicationContext()))
-                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
+        }
+
+
+        else {
+            if (isNetworkAvailable(getActivity().getApplicationContext())) {
+                if (idarray.size() > 0)
+                    idarray.clear();
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
+            }
+            else
             Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
         }
 
@@ -153,7 +162,16 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadPost(user_id, "", country, city, type, sortby, pcat_id, "", "", "", latitude, longitude);
+                        search_key = ""; csv = ""; sortby = ""; type = "search"; price_min = ""; price_max = "";
+                                 latitude = ""; longitude = ""; pcat_id = "104";
+
+                                 currentLocation.setText("Current location");
+
+                                 if (idarray.size()>0)
+                                     idarray.clear();
+
+
+                        loadPost(user_id, "", country, city, type, "", pcat_id, "", "", "", "", "");
 
                         refreshLayout.setRefreshing(false);
                     }
@@ -161,12 +179,16 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+
+
+
         return v;
     }
     private void findbyview(View v) {
 
 
         refreshLayout = (PullRefreshLayout) v.findViewById(R.id.refreshLay);
+
         recyclerViewItem = (ListView) v.findViewById(R.id.recyclerViewItem);
         noPostTv = (TextView) v.findViewById(R.id.noPostTv);
         progressbar = (ProgressBar) v.findViewById(R.id.progressbar);
@@ -193,14 +215,18 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
         cancel_btn = (TextView) v.findViewById(R.id.cancel_btnIV);
         cameraIV = (TextView) v.findViewById(R.id.cameraIV);
         galleryIV = (TextView) v.findViewById(R.id.gallerIV);
-        addimageHEaderTV = (TextView) v.findViewById(R.id.addimageheader);
+        TextView addimageHEaderTV = (TextView) v.findViewById(R.id.addimageheader);
         currentLocation = (TextView) v.findViewById(R.id.currentLocation);
         priceTextView = (TextView) v.findViewById(R.id.priceTextView);
         snackbarPosition = (RelativeLayout) v.findViewById(R.id.snackbarPosition);
         cat_TextView = (TextView) v.findViewById(R.id.cat_TextView);
         mostRecentTextView = (TextView) v.findViewById(R.id.mostRecentTextView);
-        forsaleTV = (Button) v.findViewById(R.id.forsaleTV);
+        Button forsaleTV = (Button) v.findViewById(R.id.forsaleTV);
         searchbox = (EditText) v.findViewById(R.id.msearch);
+
+
+        progressbar.setVisibility(View.GONE);
+        postImageLay.setVisibility(View.GONE);
 
         for_sale.getParent().requestChildFocus(for_sale, for_sale);
         recyclerViewItem.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
@@ -236,7 +262,7 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
         showcase.setOnClickListener(this);
         personel.setOnClickListener(this);
         community.setOnClickListener(this);
-
+        Post_camera_icon.setOnClickListener(this);
 
         currentLocation.setOnClickListener(this);
         priceTextView.setOnClickListener(this);
@@ -250,7 +276,7 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                     search_key = searchbox.getText().toString();
-                    loadPost(user_id, search_key, country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
+                    loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
                     hideKeyboard(getActivity());
                     return true;
                 }
@@ -286,7 +312,8 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
 
             case R.id.mostRecentTextView:
                 catlog.setVisibility(View.GONE);
-                loadPost(user_id, "", country, city, type, "newfirst", pcat_id, cat_id, "", "", latitude, longitude);
+                sortby="newfirst";
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
                 break;
 
             case R.id.personal_top:
@@ -384,8 +411,7 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
     }
 
     private void ShowPriceSnack() {
-        price_min = "";
-        price_max = "";
+
         final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
         LayoutInflater objLayoutInflater = (LayoutInflater) getActivity().getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
         View view = objLayoutInflater.inflate(R.layout.snackbar_price_layout, null);
@@ -417,13 +443,10 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
-                price_min = "";
-                price_max = "";
-
                 price_min = String.valueOf(rangeSeekBar.getSelectedMinValue());
                 price_max = String.valueOf(rangeSeekBar.getSelectedMaxValue());
                 dialog.dismiss();
-                loadPost(user_id, "", country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
 
 
             }
@@ -433,12 +456,9 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
     }
 
     public void ShowCategeriesSnak() {
-        if (idarray.size() > 0)
-            idarray.clear();
-
 
         catlog.setVisibility(View.VISIBLE);
-        final ArrayList<categories> arrayList = new ArrayList<>();
+
 
         title_cat.setText(getResources().getString(R.string.for_sale));
         title_cat.setTypeface(face);
@@ -461,7 +481,7 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
 
                 catlog.setVisibility(View.GONE);
 
-                String csv = idarray.toString().replace("[", "").replace("]", "")
+                 csv = idarray.toString().replace("[", "").replace("]", "")
                         .replace(", ", ",");
                 loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
                 cat_id = "";
@@ -536,9 +556,8 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
                             {
                                 recyclerViewItem.setVisibility(View.VISIBLE);
                                 noPostTv.setVisibility(View.GONE);
-                                    itemlistAdapter = new ForSaleAdapter(getActivity(), posts);
+                                  itemlistAdapter = new ForSaleAdapter(getActivity(), posts);
                                     recyclerViewItem.setAdapter(itemlistAdapter);
-
                                     System.gc();
                                 itemlistAdapter.notifyDataSetChanged();
                             }
@@ -623,14 +642,6 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 
                 startActivityForResult( intent, 01);
-
-//
-//
-//
-//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(cameraIntent, 01);
-
-//              startCameraActivity();
             }
         });
 
@@ -746,6 +757,9 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         postImageLay.setVisibility(View.GONE);
 
+
+        System.out.println("******** result from camera **********");
+        System.out.println("result " +resultCode);
         if (requestCode == CAPTURE_IMAGES_FROM_CAMERA) {
 //          exitingCamera();
 }
@@ -765,27 +779,22 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
                 String new_location = getAddressFromLatlng(location, getActivity().getApplicationContext(), 0);
                 currentLocation.setText("  " + new_location);
 //                saveData(getApplicationContext(), "currentLocation", new_location);
-                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
+                loadPost(user_id, search_key, country, city, type, sortby, pcat_id, csv, price_max, price_min, latitude, longitude);
                fromLocation=false;
-                latitude = "";
-                longitude = "";
             }
         }
 
         if (requestCode == 01) {
+            if (resultCode== -1) {
 
-            ArrayList<String> imageArray = new ArrayList<>();
-            System.out.println("********** image uri ****");
-            System.out.println(imageUri);
+                ArrayList<String> imageArray = new ArrayList<>();
+                System.out.println("********** image uri ****");
+                System.out.println(imageUri);
+                imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
 
-//            Bitmap bmp = (Bitmap) data.getExtras().get("data");
-
-//            Uri uri = getImageUri(getActivity().getApplicationContext(), bmp);
-            imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
-            saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
-
-            nextFragment(imageArray,str_image_arr);
-
+                nextFragment(imageArray, str_image_arr);
+            }
         }
 
         if (requestCode == 17) {
@@ -835,7 +844,8 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         progressbar.setVisibility(View.GONE);
         if (isNetworkAvailable(getActivity().getApplicationContext()))
-            loadPost(user_id, "", "", "", type, sortby, "104", "", "", "", latitude, longitude);
+
+            loadPost(user_id, search_key, "", "", type, sortby, "104", csv, price_max, price_min, latitude, longitude);
         else
             Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
     }

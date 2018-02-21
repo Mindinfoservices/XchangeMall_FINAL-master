@@ -6,39 +6,9 @@
     android:background="@drawable/loginbackground"
     android:orientation="vertical">
 
-
-    <!--Image slider layout-->
-    <LinearLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <include layout="@layout/postyouaddheader" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/image_lay"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@+id/toolbar"
-        android:background="@drawable/item_shadow_bg"
-        android:labelFor="@+id/toolbar">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.v4.view.ViewPager>
-
-    </LinearLayout>
-
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/image_lay"
+        android:layout_height="match_parent"
         android:layout_marginTop="5dp"
         android:background="@drawable/item_shadow_bg"
         android:scrollbars="none">

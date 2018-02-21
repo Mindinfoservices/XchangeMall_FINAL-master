@@ -17,6 +17,8 @@ import android.widget.VideoView;
 
 import com.mindinfo.xchangemall.xchangemall.R;
 
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
+
 public class CreateShowCase extends AppCompatActivity {
 
 //    ArrayList<Integer> alImage;
@@ -35,7 +37,6 @@ int REQUEST_VIDEO_CAPTURE =01;
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        final TextView pageNo_textView = (TextView) findViewById(R.id.pageNo_textView);
         TextView headtv = (TextView) findViewById(R.id.headtv);
         TextView titleTV = (TextView) findViewById(R.id.titleTV);
         ImageView back_btn = (ImageView) findViewById(R.id.back_btn);

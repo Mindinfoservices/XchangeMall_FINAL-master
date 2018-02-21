@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/item_shadow_bg"
-    android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="10dp">
-
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,11 +22,6 @@
                 android:id="@+id/itemImageView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/no_img" />
         </LinearLayout>
@@ -201,3 +193,10 @@
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
+
+
+
+
+
+
+

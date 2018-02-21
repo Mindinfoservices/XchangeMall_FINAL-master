@@ -1,5 +1,6 @@
 package com.mindinfo.xchangemall.xchangemall.activities.job_Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -60,10 +61,10 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
     GoogleMap map;
     Marker mapMarker;
     LatLng item_location = null;
-    String post_owner_name, post_time, job_type, job_salary, post_id, job_desc, owner_id, job_name, owner_image;
+    String post_owner_name, post_time, job_type, job_salary, post_id, job_desc,job_duties = "Not disclosed",experience="Not disclosed",owner_id, job_name, owner_image;
     double post_lat, post_lng;
     private TextView detail_headTV, owner_nameTV, post_timeTV, view_profile_btn, job_nameTV, job_typeTV, salaryTv, address_headTV,
-            job_descheadTv, job_deacTv, user_reviewTv;
+            job_descheadTv, job_descTv, user_reviewTv,job_dutiestv,exptv,sizeTV,dogTv,catTv;
     private ImageView call_btn, vdo_btn, chat_btn, post_owner_image, share_btn, fav_btn, back_btn,report_btn;
     private Button apply_job_btn;
 
@@ -97,7 +98,7 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
                 if (fragment_name.equals("job"))
 
                 {
-                    job_descheadTv.setText("Job Description");
+                    job_descheadTv.setText(R.string.job_description);
                     String apply_status = responseObj.getString("apply_status");
                      post_id = responseObj.getString("id");
                     System.out.println(post_id + "////" +user_id+ "****** is user's post ******");
@@ -106,10 +107,10 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
 
                     if (apply_status.equals("1")) {
                         apply_job_btn.setBackgroundColor(getResources().getColor(R.color.green));
-                        apply_job_btn.setText("Already Applied");
+                        apply_job_btn.setText(R.string.already_apply);
 
                     } else {
-                        apply_job_btn.setText("Apply For Job");
+                        apply_job_btn.setText(R.string.apply_for_job);
                         apply_job_btn.setOnClickListener(this);
 
                     }
@@ -117,7 +118,7 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
 
                 else if (fragment_name.equals("rental"))
                 {
-                    job_descheadTv.setText("Property Description");
+                    job_descheadTv.setText(R.string.property_desc);
 
                     String apply_status = responseObj.getString("rental_request");
                     post_id = responseObj.getString("id");
@@ -129,18 +130,17 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
 
                     if (apply_status.equals("1")) {
                         apply_job_btn.setBackgroundColor(getResources().getColor(R.color.green));
-                        apply_job_btn.setText("Already Applied");
+                        apply_job_btn.setText(R.string.already_apply);
 
                     } else {
-
-                        apply_job_btn.setText("Send Application");
+                        apply_job_btn.setText(R.string.send_app);
                         apply_job_btn.setOnClickListener(this);
                     }
                 }
 
                 else if (fragment_name.equals("property_sale"))
                 {
-                    job_descheadTv.setText("Property Description");
+                    job_descheadTv.setText(R.string.property_desc);
 
                     String apply_status = responseObj.getString("property_request");
                     post_id = responseObj.getString("id");
@@ -152,12 +152,12 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
 
                     if (apply_status.equals("1")) {
                         apply_job_btn.setBackgroundColor(getResources().getColor(R.color.green));
-                        apply_job_btn.setText("Already Applied");
+                        apply_job_btn.setText(R.string.already_apply);
 
                     } else {
                         System.out.println("***** sale send *******");
 
-                        apply_job_btn.setText("Send Application");
+                        apply_job_btn.setText(R.string.send_app);
                         apply_job_btn.setOnClickListener(this);
                     }
                 }
@@ -251,6 +251,7 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
         startActivity(callScreen);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setData(JSONObject responseObj) {
 
 
@@ -268,24 +269,56 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
             job_desc = responseObj.getString("description");
             job_name = responseObj.getString("title");
 
+            job_descTv.setText(job_desc);
             detail_headTV.setText(job_name);
             owner_nameTV.setText(post_owner_name);
             post_timeTV.setText("Ad Posted At :" + post_time);
 
-            if (fragment_name.equals("job")) {
+            if (fragment_name.equals("job"))
+            {
                 job_salary = responseObj.getString("salary_as_per");
+                job_duties = responseObj.getString("job_responsibilities");
+                experience = responseObj.getString("experience_skills");
+
+                job_dutiestv.setText("Job Duties : "+job_duties);
+                exptv.setText("Experience : "+experience);
+                sizeTV.setVisibility(View.GONE);
+                dogTv.setVisibility(View.GONE);
+                catTv.setVisibility(View.GONE);
             }
 
             else {
-                job_salary = responseObj.getString("price");
+                if (fragment_name.equals("property_sale"))
+                {
+                    job_salary = responseObj.getString("price").split("/")[0];
+                }
+                else
+                {
+                    job_salary = responseObj.getString("price");
+
+                }
+
+                experience = responseObj.getString("bathrooms");
+                job_duties = responseObj.getString("rooms_bedrooms");
+
+              String size  = responseObj.getString("size");
+                String dog = responseObj.getString("dog_friendly");
+                String cat = responseObj.getString("cat_friendly");
+
+                sizeTV.setVisibility(View.VISIBLE);
+                dogTv.setVisibility(View.VISIBLE);
+                catTv.setVisibility(View.VISIBLE);
+
+                job_dutiestv.setText("Rooms/Bedrooms : " + job_duties);
+                exptv.setText("Bathrooms : " + experience);
+                sizeTV.setText("Room size : "+size);
+                dogTv.setText("Cat Friendly : "+dog);
+                catTv.setText("Dog friendly : "+cat);
             }
 
-            job_deacTv.setText(job_desc);
             salaryTv.setText(job_salary);
             job_typeTV.setText(job_type);
             job_nameTV.setText(job_name);
-
-
 
             if (fav_status.equals("1"))
                 Picasso.with(getApplicationContext()).load(R.drawable.fav).into(fav_btn);
@@ -362,7 +395,6 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
         vdo_btn.setOnClickListener(this);
         post_owner_image.setOnClickListener(this);
     }
-
     private void init() {
 
         locationTV = (TextView) findViewById(R.id.address_tv);
@@ -373,7 +405,13 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
         post_timeTV = (TextView) findViewById(R.id.post_time);
         view_profile_btn = (TextView) findViewById(R.id.view_profile_btn);
         user_reviewTv = (TextView) findViewById(R.id.user_reviewTV);
-        job_deacTv = (TextView) findViewById(R.id.job_descTV);
+        job_descTv = (TextView) findViewById(R.id.job_descTV);
+        sizeTV = (TextView) findViewById(R.id.sizeTV);
+        dogTv = (TextView) findViewById(R.id.dogTv);
+        catTv = (TextView) findViewById(R.id.catTv);
+        job_dutiestv = (TextView) findViewById(R.id.job_dutiestv);
+        exptv = (TextView) findViewById(R.id.exptv);
+
         job_descheadTv = (TextView) findViewById(R.id.job_desc_head);
         address_headTV = (TextView) findViewById(R.id.address_head_tv);
         salaryTv = (TextView) findViewById(R.id.salaryTv);
@@ -399,7 +437,12 @@ public class JobsCatDetailsActivity extends BaseActivity implements View.OnClick
         post_timeTV.setTypeface(face);
         view_profile_btn.setTypeface(face);
         user_reviewTv.setTypeface(face);
-        job_deacTv.setTypeface(face);
+        job_descTv.setTypeface(face);
+        sizeTV.setTypeface(face);
+        catTv.setTypeface(face);
+        dogTv.setTypeface(face);
+        job_dutiestv.setTypeface(face);
+        exptv.setTypeface(face);
         job_descheadTv.setTypeface(face);
         address_headTV.setTypeface(face);
         salaryTv.setTypeface(face);

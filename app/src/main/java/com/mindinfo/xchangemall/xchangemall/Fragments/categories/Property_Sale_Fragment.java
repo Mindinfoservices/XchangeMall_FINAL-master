@@ -89,7 +89,7 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
 
     private Typeface face;
     private String search_key = "", cat_id = "", sortby = "", type = "search", price_min = "", price_max = "",
-            country = "", city = "", latitude = "", longitude = "", pcat_id = "272";
+            country = "", city = "", latitude = "", longitude = "", pcat_id = "272",csv="";
     private TextView cancel_btn, cameraIV, galleryIV, addimageHEaderTV;
     private String lati = "0", longi = "0", user_id = "";
     private Bundle bundle;
@@ -117,26 +117,35 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
         findbyview(v);
         addClickListner(v);
 
+        if (isNetworkAvailable(getActivity().getApplicationContext())) {
+            if (bundle != null)
+            {
+                pcat_id = "272";
+                cat_id = bundle.getString("subCatID", "");
+csv=cat_id;
 
-        if (bundle != null) {
-            pcat_id = "272";
-            cat_id = bundle.getString("subCatID", "");
+                if (isNetworkAvailable(getActivity().getApplicationContext()))
+                    if (idarray.size() > 0)
+                        idarray.clear();
+                loadPost(user_id, search_key, type, sortby, pcat_id,
+                        cat_id, price_max, price_min, latitude, longitude);
 
-
-            if (isNetworkAvailable(getActivity().getApplicationContext()))
-                loadPost(user_id, "", type, "", pcat_id,
-
-                        cat_id, "", "", latitude, longitude);
-
-
+            }
             else
-                Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
-        } else {
-            if (isNetworkAvailable(getActivity().getApplicationContext()))
-                loadPost(user_id, "", type, "", pcat_id, "", "", "", latitude, longitude);
-            else
-                Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
+            {
+                if (isNetworkAvailable(getActivity().getApplicationContext()))
+                    if (idarray.size() > 0)
+                        idarray.clear();
+
+                loadPost(user_id, search_key, type, sortby, pcat_id,
+
+                        csv, price_max, price_min, latitude, longitude);
+
+            }
         }
+        else
+            Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
+
 
         refreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_SMARTISAN);
         refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
@@ -145,8 +154,15 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadPost(user_id, "", type, "", pcat_id, "", "", "", latitude, longitude);
+                        search_key = ""; csv = ""; sortby = ""; type = "search"; price_min = ""; price_max = "";
+                        latitude = ""; longitude = ""; pcat_id = "102";
+                        currentLocation.setText("Current location");
 
+                        if (idarray.size()>0)
+                            idarray.clear();
+
+                        loadPost(user_id, search_key, type, sortby, pcat_id,
+                                csv, price_max, price_min, latitude, longitude);
                         refreshLayout.setRefreshing(false);
                     }
                 }, 2000);
@@ -245,7 +261,8 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
                     search_key = searchbox.getText().toString();
-                    loadPost(user_id, search_key, type, "", pcat_id, cat_id, "", "", latitude, longitude);
+                    loadPost(user_id, search_key, type, sortby, pcat_id, csv,
+                            price_max, price_min, latitude, longitude);
                     return true;
                 }
                 return false;
@@ -278,7 +295,9 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
 
 
             case R.id.mostRecentTextView:
-                loadPost(user_id, "", type, "newFirst", pcat_id, cat_id, "", "", latitude, longitude);
+                sortby="newFirst";
+                loadPost(user_id, search_key, type, sortby, pcat_id, csv,
+                        price_max, price_min, latitude, longitude);
                 break;
 
             case R.id.personal_top:
@@ -380,13 +399,11 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(View v) {
 
-                price_min = "";
-                price_max = "";
-
                 price_min = String.valueOf(rangeSeekBar.getSelectedMinValue());
                 price_max = String.valueOf(rangeSeekBar.getSelectedMaxValue());
                 dialog.dismiss();
-                loadPost(user_id, "", type, "", pcat_id, cat_id, price_max, price_min, latitude, longitude);
+                loadPost(user_id, search_key, type, sortby, pcat_id, csv,
+                        price_max, price_min, latitude, longitude);
 
 
             }
@@ -403,7 +420,7 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
         catlog.setVisibility(View.VISIBLE);
         final ArrayList<categories> arrayList = new ArrayList<>();
 
-        title_cat.setText(getResources().getString(R.string.for_sale));
+        title_cat.setText(getResources().getString(R.string.property_for_sale));
         title_cat.setTypeface(face);
         MULTIPLEsELECTIONcATEGORY postadapter = new MULTIPLEsELECTIONcATEGORY(arrayList, getActivity());
         cat_sub_list_view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -426,7 +443,8 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
 
                 String csv = idarray.toString().replace("[", "").replace("]", "")
                         .replace(", ", ",");
-                loadPost(user_id, "", type, "", pcat_id, csv, "", "", latitude, longitude);
+                loadPost(user_id, search_key, type, sortby, pcat_id, csv, price_max,
+                        price_min, latitude, longitude);
 
 
             }
@@ -726,23 +744,27 @@ public class Property_Sale_Fragment extends Fragment implements View.OnClickList
                 String new_location = getAddressFromLatlng(location, getActivity().getApplicationContext(), 0);
                 currentLocation.setText("  " + new_location);
 //                saveData(getApplicationContext(), "currentLocation", new_location);
-                loadPost(user_id, search_key, type, "", pcat_id, cat_id, "", "", latitude, longitude);
+                loadPost(user_id, search_key, type, sortby, pcat_id, csv, price_max,
+                        price_min, latitude, longitude);
+
+
                 latitude = "";
                 longitude = "";
             }
         }
         if (requestCode == 01) {
-            postImageLay.setVisibility(View.GONE);
+            if (resultCode==-1) {
+                postImageLay.setVisibility(View.GONE);
 
-            ArrayList<String> imageArray = new ArrayList<>();
-            System.out.println("********** image uri ****");
-            System.out.println(imageUri);
+                ArrayList<String> imageArray = new ArrayList<>();
+                System.out.println("********** image uri ****");
+                System.out.println(imageUri);
 
-            imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
-            saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
 
-            nextFragment(imageArray,str_image_arr);
-
+                nextFragment(imageArray, str_image_arr);
+            }
         }
         if (requestCode == 17) {
             if (resultCode == 1) {

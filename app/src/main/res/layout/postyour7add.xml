@@ -9,42 +9,11 @@
     android:orientation="vertical">
 
 
-    <!--Image slider layout-->
-    <LinearLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-        <include
-            layout="@layout/postyouaddheader"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/imagelay"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_below="@id/header"
-        android:background="@color/black"
-        >
-
-        <com.daimajia.slider.library.SliderLayout
-            android:id="@+id/slider"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            custom:auto_cycle="true"
-            custom:indicator_visibility="visible"
-            custom:pager_animation="Accordion"
-            custom:pager_animation_span="1100" />
-    </LinearLayout>
-
-
-    <!--Details layout-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/btn_lay"
-        android:layout_below="@id/imagelay"
         android:layout_gravity="center|top"
         android:background="@drawable/item_shadow_bg"
         android:orientation="vertical">

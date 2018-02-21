@@ -253,10 +253,12 @@
 
     <string-array name="Salary_as_per">
         <item>Select</item>
-        <item>Hour</item>
-        <item> Day</item>
-        <item> Month</item>
-        <item>Annual</item>
+        <item>/ Hour</item>
+        <item>/ Day</item>
+        <item>/ Week</item>
+        <item>/ Month</item>
+        <item>/ Year</item>
+
     </string-array>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="you_city">You city</string>
@@ -591,7 +593,7 @@
     <string name="contact_name">Contact Name :</string>
     <string name="post_title">Post Title :</string>
     <string name="price">Price :</string>
-    <string name="description">Description : </string>
+    <string name="description">Course Description : </string>
     <string name="address">Address :</string>
     <string name="type_message">Type Message</string>
     <string name="wrogan_man_gray_printed_slim">Wrogan man gray printed slim</string>
@@ -623,5 +625,13 @@
     <string name="down_payment">How much do you have as a down payment ?</string>
     <string name="bankruptcy">Have you had a bankruptcy, foreclosure or short sale in the last 7 years ? </string>
     <string name="always_send_my_resume_purchase">Always send my Purchase Application</string>
+    <string name="view">View</string>
+    <string name="apply_now">Apply Now</string>
+    <string name="_4_1_user_review">4.1 user review</string>
+    <string name="experience">Experience :</string>
+    <string name="page4">4of7</string>
+    <string name="already_apply">Already Applied</string>
+    <string name="property_desc">Property Description</string>
+    <string name="send_app">Send Application</string>
 
 </resources>

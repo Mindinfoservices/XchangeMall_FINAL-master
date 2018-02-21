@@ -41,6 +41,7 @@ import com.mindinfo.xchangemall.xchangemall.R;
 import com.mindinfo.xchangemall.xchangemall.activities.main.MultiPhotoSelectActivity;
 import com.mindinfo.xchangemall.xchangemall.adapter.CategoryAdapter;
 import com.mindinfo.xchangemall.xchangemall.adapter.ForJobAdapter;
+import com.mindinfo.xchangemall.xchangemall.adapter.ForSaleAdapter;
 import com.mindinfo.xchangemall.xchangemall.beans.ItemsMain;
 import com.mindinfo.xchangemall.xchangemall.beans.categories;
 import com.mindinfo.xchangemall.xchangemall.other.RangeSeekBar;
@@ -86,7 +87,7 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
     String longi = "0";
     Bundle bundle;
     private ListView recyclerViewItem;
-    private ForJobAdapter itemlistAdapter;
+    private ForSaleAdapter itemlistAdapter;
     private List<ItemsMain> itemList;
     private LinearLayout Post_camera_icon;
     private LinearLayout property_rental, property_rentalsale, jobs, for_sale, buisness, personel, community, showcase;
@@ -507,7 +508,8 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
 
                                 for (int i = 0; i < posts.length(); i++)
                                 {
-                                    itemlistAdapter = new ForJobAdapter(getActivity(),posts,"business");
+//                                    itemlistAdapter = new ForSaleAdapter(getActivity(),posts,"business");
+                                    itemlistAdapter = new ForSaleAdapter(getActivity(),posts);
                                     recyclerViewItem.setAdapter(itemlistAdapter);
 
                                 }

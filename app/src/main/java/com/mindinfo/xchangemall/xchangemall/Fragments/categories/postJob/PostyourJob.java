@@ -39,18 +39,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.cross_imageView;
+import static com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyour2Add.pageNo_textView;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
-public class PostyourJob extends Fragment implements View.OnClickListener, BaseSliderView.OnSliderClickListener {
+public class PostyourJob extends Fragment implements View.OnClickListener{
 
     public static  String job_responsbitity="", job_exp="" ,job_salary="",job_title="";
     ArrayList<String> imageSet = new ArrayList<String>();
-    private SliderLayout imageSlider;
+
     private Button next_btn;
     private AppCompatSpinner SpinnerCat,spinnerSalary,JopTypeSpinner;
-    private ImageView cross_imageView;
-    private TextView pageNo_textView,cat_TextView,currencyTV;
+    private TextView cat_TextView,currencyTV;
     private ImageButton back_arrowImage;
     private EditText EditTextJobDecs,EditTextJobRes,EditTextJobSkill,EditTextJobLoc,SalaryET;
     private FragmentManager fm;
@@ -76,31 +77,6 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
 
         }
 
-
-
-        HashMap<String, File> url_maps = new HashMap<String, File>();
-
-        for (int i = 0; i < imageSet.size(); i++) {
-            url_maps.put("image" + i, new File(imageSet.get(i)));
-
-
-        }
-        for (String name : url_maps.keySet()) {
-            TextSliderView textSliderView = new TextSliderView(getActivity().getApplicationContext());
-            // initialize a SliderLayout
-            textSliderView
-                    .description(name)
-                    .image(url_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.CenterInside)
-                    .setOnSliderClickListener(this);
-
-            //add your extra information
-            textSliderView.bundle(new Bundle());
-            textSliderView.getBundle()
-                    .putString("extra", name);
-
-            imageSlider.addSlider(textSliderView);
-        }
         loadSpinner();
         return v;
     }
@@ -109,13 +85,12 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
     private void findItem(View v)
     {
         scrollview = (NestedScrollView)v.findViewById(R.id.scrollView);
-        imageSlider = (SliderLayout)v.findViewById(R.id.slider);
+
         SpinnerCat = (AppCompatSpinner) v.findViewById(R.id.SpinnerCat);
         spinnerSalary = (AppCompatSpinner) v.findViewById(R.id.spinnerSalary);
         JopTypeSpinner = (AppCompatSpinner) v.findViewById(R.id.JopTypeSpinner);
         next_btn = (Button) v.findViewById(R.id.next_btn);
-        cross_imageView = (ImageView) v.findViewById(R.id.cross_imageView);
-        pageNo_textView = (TextView) v.findViewById(R.id.pageNo_textView);
+
         cat_TextView = (TextView) v.findViewById(R.id.cat_TextView);
         currencyTV = (TextView) v.findViewById(R.id.currencyTV);
         back_arrowImage = (ImageButton) v.findViewById(R.id.back_arrowImage);
@@ -125,7 +100,7 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
         EditTextJobSkill = (EditText) v.findViewById(R.id.EditTextDescription);
         EditTextJobLoc = (EditText) v.findViewById(R.id.EditTextSocialMedia);
         SalaryET = (EditText) v.findViewById(R.id.SalaryET);
-   //     conditionEditText = (EditText) v.findViewById(R.id.conditionEditText);
+
         pageNo_textView.setText("4of7");
        Typeface face = Typeface.createFromAsset(getActivity().getApplicationContext().getAssets(),
                 "fonts/estre.ttf");
@@ -149,11 +124,11 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     System.out.println("=========== action done ==========");
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(JopTypeSpinner.getWindowToken(), 0);
-
+                    imm.hideSoftInputFromWindow(EditTextJobLoc.getWindowToken(), 0);
 
                     scrollview.fullScroll(View.FOCUS_DOWN);
-                    EditTextJobLoc.setCursorVisible(false);
+                    EditTextJobLoc.requestFocus();
+                    EditTextJobLoc.setCursorVisible(true);
                     return true;
                 }
                 return false;
@@ -191,14 +166,16 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
         {
             case R.id.next_btn:
                 String jobtype = JopTypeSpinner.getSelectedItem().toString();
-
-
-
-
                 if(SalaryET.getText().length() == 0)
                 {
                     Toast.makeText(getActivity(), "Enter Salary", Toast.LENGTH_SHORT).show();
                     SalaryET.requestFocus();
+                    return;
+                }
+                if(EditTextJobLoc.getText().length() == 0)
+                {
+                    Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
+                    EditTextJobLoc.requestFocus();
                     return;
                 }
 
@@ -232,12 +209,7 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
                     return;
                 }
 
-                if(EditTextJobLoc.getText().length() == 0)
-                {
-                    Toast.makeText(getActivity(), "Enter Location", Toast.LENGTH_SHORT).show();
-                    EditTextJobLoc.requestFocus();
-                    return;
-                }
+
 
 
 
@@ -251,7 +223,7 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
                 String salary_ext = spinnerSalary.getSelectedItem().toString();
                 String salary_symbol = currencyTV.getText().toString();
 
-                job_salary =symbol+salary_As_per+" / "+salary_ext;
+                job_salary =symbol+salary_As_per+salary_ext;
                 System.out.println("**********job salry **** " + job_salary);
                 job_exp = EditTextJobSkill.getText().toString();
                 job_title = SpinnerCat.getSelectedItem().toString();
@@ -270,7 +242,7 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
                 saveData(getActivity().getApplicationContext(),"job_type",jobtype);
                 Postyour5Add postyour4add = new Postyour5Add();
                 postyour4add.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.allCategeries,postyour4add).addToBackStack(null).commit();
+                fm.beginTransaction().replace(R.id.allCategeriesIN,postyour4add).addToBackStack(null).commit();
 
                 break;
 
@@ -317,8 +289,4 @@ public class PostyourJob extends Fragment implements View.OnClickListener, BaseS
         getActivity().startActivity(i);
     }
 
-    @Override
-    public void onSliderClick(BaseSliderView slider) {
-
-    }
 }

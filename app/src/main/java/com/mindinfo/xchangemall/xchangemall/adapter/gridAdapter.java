@@ -113,12 +113,42 @@ public class gridAdapter extends BaseAdapter {
         holder.ImageView_report = (LinearLayout) rowView.findViewById(R.id.ImageView_report);
         holder.mainLay = (LinearLayout) rowView.findViewById(R.id.mainLay);
 
-        if (fragment_name.equals("rental")) {
-            holder.buy_now_btn.setVisibility(View.GONE);
-        } else if (fragment_name.equals("property_sale")) {
-            holder.buy_now_btn.setVisibility(View.VISIBLE);
-            holder.buy_now_btn.setText("Contact Seller");
+
+        try {
+            responseobj = jobj.getJSONObject(position);
+
+            getItem_image = jobj.getJSONObject(position).getString("featured_img");
+
+            fav_Status = responseobj.getString("favorite_status");
+            report_status = responseobj.getString("report_status");
+            user_id = responseobj.getString("user_id");
+            getItem_title = responseobj.getString("title");
+            getItem_subtitle = responseobj.getString("address");
+            post_id = responseobj.getString("id");
+
+
+            if (fragment_name.equals("rental"))
+            {
+                holder.buy_now_btn.setVisibility(View.GONE);
+                getItem_price = responseobj.getString("price");
+            }
+
+            else if (fragment_name.equals("property_sale")) {
+
+                getItem_price = responseobj.getString("price").split("/")[0];
+                holder.buy_now_btn.setVisibility(View.VISIBLE);
+                holder.buy_now_btn.setText("Contact Seller");
+            }
+
+
+            System.out.println("********** item position *******");
+            System.out.println(position);
+            System.out.println("** item at position *****");
+            System.out.println(post_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
 
 
         Typeface face = Typeface.createFromAsset(context.getAssets(),
@@ -131,25 +161,7 @@ public class gridAdapter extends BaseAdapter {
         holder.Item_address.setTypeface(face);
 
 
-        try {
-            responseobj = jobj.getJSONObject(position);
-            getItem_price = responseobj.getString("price");
-            getItem_image = jobj.getJSONObject(position).getString("featured_img");
 
-            fav_Status = responseobj.getString("favorite_status");
-            report_status = responseobj.getString("report_status");
-            user_id = responseobj.getString("user_id");
-            getItem_title = responseobj.getString("title");
-            getItem_subtitle = responseobj.getString("address");
-            post_id = responseobj.getString("id");
-
-            System.out.println("********** item position *******");
-            System.out.println(position);
-            System.out.println("** item at position *****");
-            System.out.println(post_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         if (fav_Status.equals("0"))
             Picasso.with(context).load(R.drawable.favv).into(holder.fav_img);
         else if (fav_Status.equals("1"))
