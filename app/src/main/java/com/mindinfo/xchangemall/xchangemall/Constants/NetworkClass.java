@@ -73,7 +73,6 @@ public class NetworkClass extends AppCompatActivity {
                 if (pcat.equals(str)) {
                     System.out.println("******* respose list cat ***");
                     System.out.println(jsonObject1);
-
                     for (int j = 0; j < jsonObject1.length(); j++) {
                         String count = String.valueOf(j);
                         JSONObject joboj = jsonObject1.getJSONObject(count);
