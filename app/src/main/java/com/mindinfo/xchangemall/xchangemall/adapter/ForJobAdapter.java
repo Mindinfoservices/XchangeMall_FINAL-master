@@ -184,10 +184,14 @@ public class ForJobAdapter extends RecyclerView.Adapter<ForJobAdapter.ViewHolder
                 holder.report_img.setImageResource(R.drawable.flag_red);
             else if (report_Status.equals("1"))
                 holder.report_img.setImageResource(R.drawable.flag_green);
-
+if (getItem_image.length()>3)
             Picasso.with(context).load(getItem_image)
                     .placeholder(R.drawable.no_img)
                     .into(holder.itemImageView);
+else
+{
+    holder.itemImageView.setImageResource(R.drawable.no_img);
+}
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -223,7 +227,7 @@ public class ForJobAdapter extends RecyclerView.Adapter<ForJobAdapter.ViewHolder
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                  }
 
             }
         });

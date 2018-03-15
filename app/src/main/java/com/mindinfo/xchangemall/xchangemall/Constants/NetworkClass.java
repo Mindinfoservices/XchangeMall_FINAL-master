@@ -787,7 +787,8 @@ public class NetworkClass extends AppCompatActivity {
 
     public static void openReportWarning(final String user_id, final String post_id,
 
-                                         final ImageView holder, final Activity context) {
+                                         final ImageView holder, final Activity context)
+    {
         AlertDialog.Builder ab = new AlertDialog.Builder
                 (context, R.style.MyAlertDialogStyle1);
         ab.setTitle("Spam / Report ").setIcon(R.drawable.spam);
