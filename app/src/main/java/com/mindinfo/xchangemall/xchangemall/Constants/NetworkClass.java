@@ -579,6 +579,108 @@ public class NetworkClass extends AppCompatActivity {
     }
 
 
+
+    public static void addBusiness(final Context context, final String user_id,final String bus_name,
+                                   final String description,final String about_bus,
+                                   final ArrayList<String> category_array,final String address, final String latitude, final String longitude, final String parent_category,
+                                   final String lng, ArrayList<String> imageSet,final String social_link,final String web_link,final String hours_of_operation)
+    {
+        final AsyncHttpClient client = new AsyncHttpClient();
+        final RequestParams params = new RequestParams();
+        final ProgressDialog ringProgressDialog;
+        ringProgressDialog = ProgressDialog.show(context, "Please wait ...", "upload process", true);
+        ringProgressDialog.setCancelable(false);
+
+
+        String category = category_array.toString().replace("[", "").replace("]", "")
+                .replace(", ", ",");
+        String contact_by = getData(context, "contact_by", "");
+        TimeZone timezone = TimeZone.getDefault();
+        String currency_code = getData(context, "currency_code", "");
+        params.put("user_id", user_id);
+        params.put("timezone", timezone.getID());
+        params.put("currency_code", currency_code);
+        params.put("category", category);
+        params.put("address", address);
+        params.put("parent_category", parent_category);
+     params.put("business_name", bus_name);
+        params.put("description", description);
+        params.put("about_business", about_bus);
+        params.put("social_media_link", social_link);
+        params.put("website_link", web_link);
+        params.put("latitude", latitude);
+        params.put("longitude", longitude);
+        params.put("hours_of_operation", hours_of_operation);
+
+        System.out.println("*************** featured image data in jobs***********");
+
+        try {
+            for (int i = 0; i < imageSet.size(); i++) {
+                String result = getData(context, "item_img" + i, "");
+
+                params.put("featured_img" + (i + 1), new File(result));
+
+                NullData(context, "item_img" + i);
+            }
+        } catch (FileNotFoundException e) {
+            ringProgressDialog.dismiss();
+            e.printStackTrace();
+
+        }
+
+        System.out.println(params);
+        client.setTimeout(60 * 1000);
+        client.setConnectTimeout(60 * 1000);
+        client.setResponseTimeout(60 * 1000);
+
+        client.post(BASE_URL_NEW + "add_business_post", params, new JsonHttpResponseHandler() {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                ringProgressDialog.dismiss();
+                System.out.println("******** response businesss post*******");
+                System.out.println(response);
+
+                try {
+                    String data = response.getString("status");
+                    if (data.equals("1")) {
+                        Toast.makeText(context, "Post Added ", Toast.LENGTH_LONG).show();
+                        context.startActivity(new Intent(context, MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra("EXIT", true));
+                    } else {
+                        Toast.makeText(context, response.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                System.out.println("******** response  property_post *******");
+                System.out.println(errorResponse);
+                ringProgressDialog.dismiss();
+                Toast.makeText(context, "Internal Server Error", Toast.LENGTH_LONG).show();
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                ringProgressDialog.dismiss();
+                System.out.println("******** response  add post *******");
+                System.out.println(responseString);
+
+            }
+
+        });
+
+
+    }
+
+
+
+
+
+
     public static void getPostDetails(final Activity context, String user_id, final String post_id, final
     ArrayList<String> postarr, final Class toAct, final String fragment_name) {
         final AsyncHttpClient client = new AsyncHttpClient();

@@ -12,6 +12,7 @@
         android:background="@color/white">
 
         <LinearLayout
+            android:id="@+id/imlay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -35,11 +36,16 @@
             android:orientation="vertical">
 
             <TextView
+
                 android:id="@+id/ItemPriceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/share_btn"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:text="$ 100"
                 android:textColor="@color/PaleVioletRed"
                 android:textSize="18sp"
@@ -111,6 +117,7 @@
 
 
             <TextView
+                android:textAllCaps="true"
                 android:id="@+id/ItemTitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

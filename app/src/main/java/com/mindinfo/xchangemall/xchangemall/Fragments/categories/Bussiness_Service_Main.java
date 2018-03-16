@@ -3,9 +3,8 @@ package com.mindinfo.xchangemall.xchangemall.Fragments.categories;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,7 +39,6 @@ import com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD.Postyou
 import com.mindinfo.xchangemall.xchangemall.R;
 import com.mindinfo.xchangemall.xchangemall.activities.main.MultiPhotoSelectActivity;
 import com.mindinfo.xchangemall.xchangemall.adapter.CategoryAdapter;
-import com.mindinfo.xchangemall.xchangemall.adapter.ForJobAdapter;
 import com.mindinfo.xchangemall.xchangemall.adapter.ForSaleAdapter;
 import com.mindinfo.xchangemall.xchangemall.beans.ItemsMain;
 import com.mindinfo.xchangemall.xchangemall.beans.categories;
@@ -52,14 +50,13 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.OpenWarning;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.getListData;
+import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.getRealPathFromURI;
 import static com.mindinfo.xchangemall.xchangemall.activities.main.BaseActivity.BASE_URL_NEW;
 import static com.mindinfo.xchangemall.xchangemall.other.CheckInternetConnection.isNetworkAvailable;
 import static com.mindinfo.xchangemall.xchangemall.other.GeocodingLocation.getAddressFromLatlng;
@@ -73,11 +70,13 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
     private static final int CAPTURE_IMAGES_FROM_CAMERA = 22;
     TextView noPostTv;
     EditText searchbox;
+    String str_image_arr[];
     ListView cat_sub_list_view;
     LinearLayout postImageLay;
     FragmentManager fm;
     Button cancel_button, confirm_btn;
     RelativeLayout snackbarPosition;
+    Uri imageUri;
     RelativeLayout category_lay;
     Typeface face;
     String search_key = "", cat_id = "", sortby = "newfirst", type = "search", price_min = "", price_max = "",
@@ -107,31 +106,29 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
         addClickListner(v);
         postImageLay.setVisibility(View.GONE);
         category_lay.setVisibility(View.GONE);
-      Post_camera_icon.setOnClickListener(this);
-            for_sale.setBackgroundResource(R.color.trans);
-            showcase.setBackgroundResource(R.color.trans);
-            jobs.setBackgroundResource(R.color.trans);
-            property_rentalsale.setBackgroundResource(R.color.trans);
-            property_rental.setBackgroundResource(R.color.trans);
-            personel.setBackgroundResource(R.color.trans);
-            community.setBackgroundResource(R.color.trans);
+        Post_camera_icon.setOnClickListener(this);
+        for_sale.setBackgroundResource(R.color.trans);
+        showcase.setBackgroundResource(R.color.trans);
+        jobs.setBackgroundResource(R.color.trans);
+        property_rentalsale.setBackgroundResource(R.color.trans);
+        property_rental.setBackgroundResource(R.color.trans);
+        personel.setBackgroundResource(R.color.trans);
+        community.setBackgroundResource(R.color.trans);
 
         bundle = getArguments();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             pcat_id = "101";
-            cat_id = bundle.getString("subCatID","");
+            cat_id = bundle.getString("subCatID", "");
 
             if (isNetworkAvailable(getActivity().getApplicationContext()))
                 loadPost(search_key, country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
             else
-                Toast.makeText(getActivity().getApplicationContext(),"No Intenet Connection",Toast.LENGTH_LONG).show();
-        }
-        else {
+                Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
+        } else {
             if (isNetworkAvailable(getActivity().getApplicationContext()))
                 loadPost(search_key, country, city, type, sortby, pcat_id, cat_id, price_max, price_min, latitude, longitude);
             else
-            Toast.makeText(getActivity().getApplicationContext(),"No Intenet Connection",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "No Intenet Connection", Toast.LENGTH_LONG).show();
         }
 
         return v;
@@ -182,6 +179,7 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
         addimageHEaderTV.setTypeface(face);
         saveData(getActivity().getApplicationContext(), "MainCatType", "101");
     }
+
     //add Click on Iteh()
     private void addClickListner(View view) {
 
@@ -212,8 +210,7 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
         });
     }
 
-    private void AddJob()
-    {
+    private void AddJob() {
         postImageLay.setVisibility(View.VISIBLE);
 
         cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -227,7 +224,37 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
             @Override
             public void onClick(View view) {
 
-                startCameraActivity();
+
+                String fileName = "Camera_Example.jpg";
+
+                // Create parameters for Intent with filename
+
+                ContentValues values = new ContentValues();
+
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+
+                values.put(MediaStore.Images.Media.DESCRIPTION, "Image capture by camera");
+
+                // imageUri is the current activity attribute, define and save it for later usage
+
+                imageUri = getActivity().getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+                /**** EXTERNAL_CONTENT_URI : style URI for the "primary" external storage volume. ****/
+
+
+                // Standard Intent action that can be sent to have the camera
+                // application capture an image and return it.
+
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+
+                startActivityForResult(intent, 01);
+
+//                startCameraActivity();
             }
         });
 
@@ -238,6 +265,7 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
             }
         });
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -406,7 +434,7 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
 //        cat_sub_list_view.setItemAnimator(new DefaultItemAnimator());
 
         cat_sub_list_view.setAdapter(postAdapter);
-        getListData("101", arrayList,getActivity().getApplicationContext());
+        getListData("101", arrayList, getActivity().getApplicationContext());
         postAdapter.notifyDataSetChanged();
 
         cat_sub_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -450,7 +478,6 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
      */
 
 
-
     private void loadPost(String search_key, String country, String city, String type, String sortby, String pcat_id, String cat_id, String price_max,
                           String price_min, String latitude, String longitude) {
         final AsyncHttpClient client = new AsyncHttpClient();
@@ -471,6 +498,8 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
         System.err.println(price_max);
         System.err.println(latitude);
         System.err.println(longitude);
+     String   user_id = getData(getActivity().getApplicationContext(), "user_id", "");
+        params.put("user_id", user_id);
 
         params.put("val", search_key);
         params.put("type", type);
@@ -485,20 +514,19 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
         params.put("cat_id", cat_id);
         System.out.println("************* requested params ****************");
         System.err.println(params);
-        client.post(BASE_URL_NEW+"search_post", params, new JsonHttpResponseHandler() {
+        client.post(BASE_URL_NEW + "search_post", params, new JsonHttpResponseHandler() {
 
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
                 ringProgressDialog.dismiss();
                 try {
-                    String data = response.getString("data");
                     String status = response.getString("status");
                     switch (status) {
                         case "0":
                             Toast.makeText(getActivity(), status, Toast.LENGTH_SHORT).show();
                             break;
                         case "1":
-                            JSONArray posts = response.getJSONArray("posts");
+                            JSONArray posts = response.getJSONArray("result");
 
                             System.out.println(posts);
                             if (posts.length() > 0) {
@@ -506,10 +534,9 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
                                 noPostTv.setVisibility(View.GONE);
                                 itemList = new ArrayList<>();
 
-                                for (int i = 0; i < posts.length(); i++)
-                                {
+                                for (int i = 0; i < posts.length(); i++) {
 //                                    itemlistAdapter = new ForSaleAdapter(getActivity(),posts,"business");
-                                    itemlistAdapter = new ForSaleAdapter(getActivity(),posts);
+                                    itemlistAdapter = new ForSaleAdapter(getActivity(), posts,"business");
                                     recyclerViewItem.setAdapter(itemlistAdapter);
 
                                 }
@@ -541,7 +568,6 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
     }
 
 
-
     private void ShowSnakforCurrent() {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -552,96 +578,12 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
         }
     }
 
-    public  void startCameraActivity() {
-        Cursor cursor = loadCursor();
-        image_count_before = cursor.getCount();
-
-        cursor.close();
-
-        Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-
-        List<ResolveInfo> activities = getActivity().getApplicationContext().getPackageManager().queryIntentActivities(cameraIntent, 0);
-
-        if (activities.size() > 0)
-            startActivityForResult(cameraIntent, CAPTURE_IMAGES_FROM_CAMERA);
-        else
-            Toast.makeText(getActivity().getApplicationContext(), "device doesn't have any app", Toast.LENGTH_SHORT).show();
-    }
-
-    public String[] getImagePaths(Cursor cursor, int startPosition) {
-
-        int size = cursor.getCount() - startPosition;
-
-        if (size <= 0) return null;
-
-        String[] paths = new String[size];
-
-        int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-
-        for (int i = startPosition; i < cursor.getCount(); i++) {
-
-            cursor.moveToPosition(i);
-
-            paths[i - startPosition] = cursor.getString(dataColumnIndex);
-        }
-
-        return paths;
-    }
-
-
-    private void exitingCamera() {
-
-        Cursor cursor = loadCursor();
-        String[] paths = getImagePaths(cursor, image_count_before);
-
-        if (paths.length > 0) {
-            List<String> wordList = Arrays.asList(paths);
-
-            for (String e : wordList) {
-
-            }process(wordList,pcat_id);
-        }
-        cursor.close();
-
-    }
-
-    private void process(List<String> wordList,String pcat_id) {
-
-         String str_image_arr[] = null;
-        List<String> responseArray = new ArrayList<>();
-        ArrayList<String> imageArray = new ArrayList<>();
-        responseArray = wordList;
-        for (int i = 0; i < responseArray.size(); i++) {
-            Uri tempUri = Uri.fromFile(new File(responseArray.get(i)));
-            imageArray.add(tempUri.toString());
-            str_image_arr = new String[]{tempUri.toString()};
-        }
-        Bundle bundle = new Bundle();
-        bundle.putStringArray("imagess", str_image_arr);
-        bundle.putStringArrayList("images", imageArray);
-        bundle.putString("MainCatType", pcat_id);
-        startActivity(new Intent(getApplicationContext(),Postyour2Add.class).putExtras(bundle));
-//        Postyour2Add postyour2Add = new Postyour2Add();
-//        postyour2Add.setArguments(bundle);
-//        fm = getFragmentManager();
-//        fm.beginTransaction().replace(R.id.allCategeries, postyour2Add).addToBackStack(null).commit();
-    }
-
-    public Cursor loadCursor() {
-
-        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
-
-        final String orderBy = MediaStore.Images.Media.DATE_ADDED;
-
-        return getActivity().getApplicationContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
-    }
-
     @SuppressLint("SetTextI18n")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         postImageLay.setVisibility(View.GONE);
 
         if (requestCode == CAPTURE_IMAGES_FROM_CAMERA) {
-            exitingCamera();
+//            exitingCamera();
         }
 
         if (requestCode == PLACE_PICKER_REQUEST) {
@@ -659,33 +601,68 @@ public class Bussiness_Service_Main extends Fragment implements View.OnClickList
             }
         }
 
+
+        if (requestCode == 01) {
+            if (resultCode == -1) {
+                ArrayList<String> imageArray = new ArrayList<>();
+                System.out.println("********** image uri ****");
+                System.out.println(imageUri);
+
+                imageArray.add(getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+                saveData(getActivity().getApplicationContext(), "item_img0", getRealPathFromURI(imageUri, getActivity().getApplicationContext()));
+
+                nextFragment(imageArray, str_image_arr);
+
+            }
+        }
+
         if (requestCode == 17) {
             if (resultCode == 1) {
                 String str_image_arr[] = null;
+                saveData(getActivity().getApplicationContext(), "language", "select");
+                saveData(getActivity().getApplicationContext(), "first_entry", "true");
+                saveData(getActivity().getApplicationContext(), "first_entry_contact", "");
+                saveData(getActivity().getApplicationContext(), "first_entry_cat", "true");
                 ArrayList<String> responseArray = new ArrayList<>();
-                ArrayList<String> imageArray = new ArrayList<>();
+                ArrayList<String> newimageArray = new ArrayList<>();
                 responseArray = data.getStringArrayListExtra("MESSAGE");
-                for (int i = 0; i < responseArray.size(); i++) {
-                    Uri uri = Uri.fromFile(new File(responseArray.get(i)));
+                if (responseArray.size() > 4) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Maximum 4 pics allowed", Toast.LENGTH_LONG).show();
+                } else {
+                    for (int i = 0; i < responseArray.size(); i++) {
+                        Uri uri = Uri.fromFile(new File(responseArray.get(i)));
 
-                    Log.e("Uri" + i, uri.toString());
-                    //In case you need image's absolute path
-                    // String path= getRealPathFromURI(getApplicationContext(), uri);
-                    imageArray.add(uri.toString());
-                    //Log.e("Path"+i,path);
-                    str_image_arr = new String[]{uri.toString()};
+                        Log.e("Uri" + i, uri.toString());
+                        saveData(getActivity().getApplicationContext(), "item_img" + i, uri.getPath());
+
+                        newimageArray.add(uri.getPath());
+                        //Log.e("Path"+i,path);
+                        str_image_arr = new String[]{uri.toString()};
+                        //AIzaSyDn243JOuaMA4Sx9uMHf1DFXMPSYQECZ0I
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArray("imagess", str_image_arr);
+                    bundle.putStringArrayList("imageSet", newimageArray);
+                    bundle.putString("MainCatType", "101");
+
+                    startActivity(new Intent(getActivity().getApplicationContext(), Postyour2Add.class).putExtras(bundle));
+
 
                 }
-                Bundle bundle = new Bundle();
-                bundle.putStringArray("imagess", str_image_arr);
-                bundle.putStringArrayList("images", imageArray);
-                startActivity(new Intent(getApplicationContext(),Postyour2Add.class).putExtras(bundle));
-//                Postyour2Add postyour2Add = new Postyour2Add();
-//                postyour2Add.setArguments(bundle);
-//                fm = getFragmentManager();
-//                fm.beginTransaction().replace(R.id.allCategeries, postyour2Add).commit();
             }
         }
     }
 
+    public void nextFragment(ArrayList<String> newimageArray, String[] str_image_arr) {
+        saveData(getActivity().getApplicationContext(), "language", "select");
+        saveData(getActivity().getApplicationContext(), "first_entry", "true");
+        saveData(getActivity().getApplicationContext(), "first_entry_contact", "");
+        saveData(getActivity().getApplicationContext(), "first_entry_cat", "true");
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("imagess", str_image_arr);
+        bundle.putStringArrayList("imageSet", newimageArray);
+        bundle.putString("MainCatType", "101");
+        startActivity(new Intent(getActivity().getApplicationContext(), Postyour2Add.class).putExtras(bundle));
+    }
 }

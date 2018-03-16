@@ -34,6 +34,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.crash.FirebaseCrash;
+import com.mindinfo.xchangemall.xchangemall.Fragments.categories.Bussiness_Service_Main;
 import com.mindinfo.xchangemall.xchangemall.Fragments.categories.ItemMainFragment;
 import com.mindinfo.xchangemall.xchangemall.Fragments.categories.JobsMainFragment;
 import com.mindinfo.xchangemall.xchangemall.Fragments.categories.Property_Rental_Fragment;
@@ -794,17 +795,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.servicesImageView:
-                Toast.makeText(getApplicationContext(), "Under Development", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Under Development", Toast.LENGTH_SHORT).show();
 
 
-//                ismovedfromHome = true;
-//                bundle.putString("MainCatType", "101");
-//                fragment = new Bussiness_Service_Main();
-//                fragment.setArguments(bundle);
-//                saveData(getApplicationContext(), "fragment_name", "Services");
-//                saveData(getApplicationContext(), "pcat_id", "101");
-//
-//                replaceFragment(fragment, true);
+                ismovedfromHome = true;
+                bundle.putString("MainCatType", "101");
+                fragment = new Bussiness_Service_Main();
+                fragment.setArguments(bundle);
+                saveData(getApplicationContext(), "fragment_name", "Services");
+                saveData(getApplicationContext(), "pcat_id", "101");
+
+                replaceFragment(fragment, true);
 break;
 
 

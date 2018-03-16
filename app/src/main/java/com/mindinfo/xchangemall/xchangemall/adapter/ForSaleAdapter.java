@@ -55,11 +55,13 @@ public class ForSaleAdapter extends BaseAdapter {
     private String post_id = "";
     private JSONObject responseDEtailsOBJ;
     private Activity context;
+    private String act_name;
 
 
-    public ForSaleAdapter(Activity context, JSONArray jobj) {
+    public ForSaleAdapter(Activity context, JSONArray jobj,String act_name) {
         this.context = context;
         this.jobj = jobj;
+        this.act_name = act_name;
     }
 
     @Override
@@ -106,11 +108,23 @@ public class ForSaleAdapter extends BaseAdapter {
         JSONObject responseobj = new JSONObject();
         try {
             responseobj = jobj.getJSONObject(position);
-            String getItem_price = responseobj.getString("price");
+            String getItem_price,getItem_title;
+            if (act_name.equals("sale"))
+            {
+                getItem_price = responseobj.getString("price");
+                 getItem_title = responseobj.getString("title");
+            }
+
+            else
+            {
+                 getItem_price = responseobj.getString("address");
+
+                getItem_title = responseobj.getString("cat_name");
+            }
             getItem_image = jobj.getJSONObject(position).getString("featured_img");
             String fav_Status = responseobj.getString("favorite_status");
             user_id = responseobj.getString("user_id");
-            String getItem_title = responseobj.getString("title");
+
             post_id = responseobj.getString("id");
 
 
@@ -145,27 +159,31 @@ public class ForSaleAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 try {
-                    getItem_image = jobj.getJSONObject(position).getString("featured_img");
+                    if (!act_name.equals("business")) {
+                        getItem_image = jobj.getJSONObject(position).getString("featured_img");
 
-                    ArrayList<String> postarr = new ArrayList<String>();
+                        ArrayList<String> postarr = new ArrayList<String>();
 
-                    postarr.add(getItem_image);
+                        postarr.add(getItem_image);
 
-                    for (int i = 0; i < postarr.size(); i++) {
-                        String image_str = postarr.get(i);
-                        str_image_arr = new String[]{image_str};
+                        for (int i = 0; i < postarr.size(); i++) {
+                            String image_str = postarr.get(i);
+                            str_image_arr = new String[]{image_str};
+                        }
+
+
+                        post_id = jobj.getJSONObject(position).getString("id");
+                        user_id = getData(context.getApplicationContext(), "user_id", "");
+                        System.out.println("** item at click *****");
+                        System.out.println(post_id);
+                        getPostDetails(user_id, post_id, postarr);
                     }
 
-
-                    post_id = jobj.getJSONObject(position).getString("id");
-                    user_id = getData(context.getApplicationContext(), "user_id", "");
-                    System.out.println("** item at click *****");
-                    System.out.println(post_id);
-                    getPostDetails(user_id, post_id, postarr);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    else
+                    {Toast.makeText(context,"Undet Development",Toast.LENGTH_LONG).show();}
+                    } catch(JSONException e){
+                        e.printStackTrace();
+                    }
 
             }
 

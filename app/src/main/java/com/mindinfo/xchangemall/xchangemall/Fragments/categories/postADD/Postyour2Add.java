@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.mindinfo.xchangemall.xchangemall.Fragments.categories.postBussiness.PostyouBusiness;
 import com.mindinfo.xchangemall.xchangemall.Fragments.categories.postJob.PostyourJob;
 import com.mindinfo.xchangemall.xchangemall.R;
 import com.mindinfo.xchangemall.xchangemall.activities.main.BaseActivity;
@@ -157,8 +158,8 @@ public class Postyour2Add extends BaseActivity implements View.OnClickListener, 
                 break;
 
             case R.id.servicesImageView:
-                Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(getApplicationContext(),"Under Development",Toast.LENGTH_SHORT).show();
+                opnenext("101");
                 break;
 
             case R.id.ShowcaseImageView:
@@ -217,7 +218,11 @@ public class Postyour2Add extends BaseActivity implements View.OnClickListener, 
 
         else {
             switch (str) {
-                case "102":
+                case "101":
+                  fragment = new PostyouBusiness();
+                    break;
+
+                    case "102":
                   fragment = new Postyour3Add();
                     break;
 

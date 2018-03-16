@@ -175,6 +175,7 @@
                 android:textColor="@color/action_bar_colour" />
 
             <RelativeLayout
+                android:id="@+id/add1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -208,6 +209,222 @@
                     app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName">
 
                 </android.support.v7.widget.AppCompatSpinner>
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerPM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/add2"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerWeekName1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/WeekdayName"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerAM1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Am"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerPM1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM1"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName1">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/add3"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerWeekName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/WeekdayName"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerAM2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Am"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName2"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName2">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerPM2"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM2"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName2"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:visibility="gone"
+                android:id="@+id/add4"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerWeekName3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/WeekdayName"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerAM3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Am"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName3"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName3">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerPM3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM3"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName3"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:visibility="gone"
+                android:id="@+id/add5"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerWeekName4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/WeekdayName"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerAM4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Am"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName4"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName4">
+
+                </android.support.v7.widget.AppCompatSpinner>
 
                 <android.support.v7.widget.AppCompatSpinner
                     android:layout_width="wrap_content"
@@ -217,13 +434,135 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/edit_text_style"
-                    android:entries="@array/Time_in_Am"
-                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM"
-                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName">
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM4"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName4"
+                    android:id="@+id/SpinnerPM4"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:visibility="gone"
+                android:id="@+id/add6"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerWeekName5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/WeekdayName"
+                    app:layout_constraintLeft_toLeftOf="parent">
 
                 </android.support.v7.widget.AppCompatSpinner>
 
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerAM5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Am"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName5"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName5">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM5"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName5"
+                    android:id="@+id/SpinnerPM5"
+                    />
+
             </RelativeLayout>
+
+            <RelativeLayout
+
+                android:visibility="gone"
+                android:id="@+id/add7"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingLeft="8dp">
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerWeekName6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/WeekdayName"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerAM6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Am"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerWeekName6"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName6">
+
+                </android.support.v7.widget.AppCompatSpinner>
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/SpinnerPM6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_style"
+                    android:entries="@array/Time_in_Pm"
+                    app:layout_constraintLeft_toRightOf="@+id/SpinnerAM6"
+                    app:layout_constraintTop_toTopOf="@+id/SpinnerWeekName6"/>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:padding="@dimen/size_10"
+                android:id="@+id/add_day_btn"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/add_icon"
+                android:textColor="@color/DarkBlue"
+                android:text="Add More"/>
+
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fabAdd"

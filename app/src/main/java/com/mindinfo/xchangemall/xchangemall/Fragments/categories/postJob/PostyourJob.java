@@ -210,13 +210,8 @@ public class PostyourJob extends Fragment implements View.OnClickListener{
                 }
 
 
-
-
-
                 ArrayList<String> categoryids = new ArrayList<String>();
                 categories cat = arrayList.get(SpinnerCat.getSelectedItemPosition());
-                cat.getTitle();
-                cat.getId();
 
                 String postDescr = EditTextJobDecs.getText().toString();
                 String salary_As_per = SalaryET.getText().toString();

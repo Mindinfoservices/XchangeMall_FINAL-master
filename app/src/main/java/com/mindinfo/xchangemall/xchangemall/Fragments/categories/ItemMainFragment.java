@@ -556,7 +556,7 @@ public class ItemMainFragment extends Fragment implements View.OnClickListener {
                             {
                                 recyclerViewItem.setVisibility(View.VISIBLE);
                                 noPostTv.setVisibility(View.GONE);
-                                  itemlistAdapter = new ForSaleAdapter(getActivity(), posts);
+                                  itemlistAdapter = new ForSaleAdapter(getActivity(), posts,"sale");
                                     recyclerViewItem.setAdapter(itemlistAdapter);
                                     System.gc();
                                 itemlistAdapter.notifyDataSetChanged();

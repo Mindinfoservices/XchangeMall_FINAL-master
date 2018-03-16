@@ -409,14 +409,6 @@ public class JobsMainFragment extends Fragment implements View.OnClickListener {
                 intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
 
                 startActivityForResult( intent, 01);
-
-
-
-
-//                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(cameraIntent, 01);
-
-//                startCameraActivity();
             }
         });
 

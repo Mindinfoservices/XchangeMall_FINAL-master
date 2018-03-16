@@ -1,10 +1,7 @@
 package com.mindinfo.xchangemall.xchangemall.Fragments.categories.postADD;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,18 +12,14 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass;
 import com.mindinfo.xchangemall.xchangemall.R;
 import com.mindinfo.xchangemall.xchangemall.activities.main.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.addJobs;
 import static com.mindinfo.xchangemall.xchangemall.Constants.NetworkClass.addProperty;
@@ -41,13 +34,13 @@ import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.getData;
 import static com.mindinfo.xchangemall.xchangemall.storage.MySharedPref.saveData;
 
 
-public class Postyour7Add extends Fragment implements View.OnClickListener{
+public class Postyour7Add extends Fragment implements View.OnClickListener {
 
     static ArrayList<String> imageSet = new ArrayList<String>();
-    ArrayList<String> categoryids ;
+    ArrayList<String> categoryids;
     String address;
     String obj;
-    JSONObject postOBj= new JSONObject();
+    JSONObject postOBj = new JSONObject();
     //next_btn
     private TextView next_btn;
     //Fragment Manager
@@ -74,10 +67,9 @@ public class Postyour7Add extends Fragment implements View.OnClickListener{
 
         finditem(v);
         OnClick(v);
-       categoryids = new ArrayList<String>();
+        categoryids = new ArrayList<String>();
         Bundle bundle = this.getArguments();
-        if (bundle != null)
-        {
+        if (bundle != null) {
             sub_cat_id = bundle.getString("sub_cat_id");
             address = bundle.getString("completeaddress");
             privacy_str = bundle.getString("privacy_str");
@@ -96,10 +88,7 @@ public class Postyour7Add extends Fragment implements View.OnClickListener{
                 postCondition = bundle.getString("postCondition");
                 pcat_name = bundle.getString("pcat_name");
                 categoryids = bundle.getStringArrayList("selectedcategories");
-            }
-
-            else if (MainCatType.equals("102") || MainCatType.equals("272"))
-            {
+            } else if (MainCatType.equals("102") || MainCatType.equals("272")) {
 
                 System.out.println("**** **** MAin Cat in if else  ******* " + MainCatType);
 
@@ -116,16 +105,25 @@ public class Postyour7Add extends Fragment implements View.OnClickListener{
                 categoryids = bundle.getStringArrayList("selectedcategories");
                 System.out.println("**** **** Cat in if else  ******* " + categoryids);
 
-            }
-
-            else {
+            } else if (MainCatType.equals("101")) {
                 obj = bundle.getString("bussinessobj");
+
+                try {
+                    postOBj = new JSONObject(obj);
+                    System.out.println("** buss obj frag 7 ****");
+                    System.out.println(postOBj);
+                } catch (JSONException e) {
+
+                }
                 saveData(getActivity().getApplicationContext(), "MainCatType", "101");
             }
 
 
             lat = bundle.getString("lat");
             lng = bundle.getString("lng");
+
+            System.err.println("*************post obj at post time ****");
+            System.err.println(obj);
 
             System.out.println("************* latlng at post time ****");
             System.out.println(lat);
@@ -163,7 +161,7 @@ public class Postyour7Add extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_arrowImage:
-               getActivity().onBackPressed();
+                getActivity().onBackPressed();
                 break;
             case R.id.cross_imageView:
                 OpenMainActivity();
@@ -204,92 +202,108 @@ public class Postyour7Add extends Fragment implements View.OnClickListener{
 
         if (checkboxFree.isChecked()) {
 
-                System.out.println(categoryids);
-                System.out.println(mainCatType);
+            System.out.println(categoryids);
+            System.out.println(mainCatType);
 
 
-                String user_id = getData(getActivity().getApplicationContext(), "user_id", "");
-                String jobtype = "";
+            String user_id = getData(getActivity().getApplicationContext(), "user_id", "");
+            String jobtype = "";
 
-                switch (mainCatType) {
-                    case "103":
+            switch (mainCatType) {
+                case "103":
 
-                        jobtype = getData(getActivity().getApplicationContext(), "job_type", "");
+                    jobtype = getData(getActivity().getApplicationContext(), "job_type", "");
 
-                        if (jobtype.equals("Full time"))
-                            jobtype = "2";
-                        else
-                            jobtype = "1";
-
-
-                        System.out.println("******* edtails for job post ***** ");
-                        System.out.println(job_exp);
-                        System.out.println(job_responsbitity);
-                        System.out.println(job_title);
-                        System.out.println(job_salary);
-                        addJobs(getActivity(), user_id, contName_str, job_title, postDes, address,
-                                phone_str,
-                                lat, lng, categoryids, MainCatType,
-                                "en", imageSet, job_responsbitity, job_exp, jobtype, job_salary);
-                        break;
-
-                    case "104":
-
-                        addpost(getActivity(), user_id, contName_str, postTitle, postDes, postPrice, address, phone_str,
-                                lat, lng, categoryids, MainCatType,
-                                "en", imageSet,postSize,postCondition);
-                        break;
+                    if (jobtype.equals("Full time"))
+                        jobtype = "2";
+                    else
+                        jobtype = "1";
 
 
-                        case "102":
-                            try {
-                                String val = getData(getActivity().getApplicationContext(),"prop_obj","");
-                                postOBj= new JSONObject(val);
+                    System.out.println("******* edtails for job post ***** ");
+                    System.out.println(job_exp);
+                    System.out.println(job_responsbitity);
+                    System.out.println(job_title);
+                    System.out.println(job_salary);
+                    addJobs(getActivity(), user_id, contName_str, job_title, postDes, address,
+                            phone_str,
+                            lat, lng, categoryids, MainCatType,
+                            "en", imageSet, job_responsbitity, job_exp, jobtype, job_salary);
+                    break;
 
-                                String roomUnit =postOBj.getString("room_unit");
+                case "104":
 
-                            String prop_desc =postOBj.getString("property_desc");
-                            String prop_price =postOBj.getString("property_price");
-                            String prop_size =postOBj.getString("prop_size");
-                            String washroom_unit =postOBj.getString("bathroom_unit");
+                    addpost(getActivity(), user_id, contName_str, postTitle, postDes, postPrice, address, phone_str,
+                            lat, lng, categoryids, MainCatType,
+                            "en", imageSet, postSize, postCondition);
+                    break;
 
-                                System.out.println("** adding property ********");
 
-                                addProperty(getActivity(), user_id, contName_str, postTitle, prop_desc, address, phone_str, lat, lng,
-                                        categoryids, MainCatType, "en", imageSet,washroom_unit,roomUnit,prop_price,prop_size);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                case "102":
+                    try {
+                        String val = getData(getActivity().getApplicationContext(), "prop_obj", "");
+                        postOBj = new JSONObject(val);
 
-                            }
+                        String roomUnit = postOBj.getString("room_unit");
 
-                        break;
-                            case "272":
-                            try {
-                                String val = getData(getActivity().getApplicationContext(),"prop_obj","");
-                                postOBj= new JSONObject(val);
+                        String prop_desc = postOBj.getString("property_desc");
+                        String prop_price = postOBj.getString("property_price");
+                        String prop_size = postOBj.getString("prop_size");
+                        String washroom_unit = postOBj.getString("bathroom_unit");
 
-                                String roomUnit =postOBj.getString("room_unit");
+                        System.out.println("** adding property ********");
 
-                            String prop_desc =postOBj.getString("property_desc");
-                            String prop_price =postOBj.getString("property_price");
-                            String prop_size =postOBj.getString("prop_size");
-                            String washroom_unit =postOBj.getString("bathroom_unit");
+                        addProperty(getActivity(), user_id, contName_str, postTitle, prop_desc, address, phone_str, lat, lng,
+                                categoryids, MainCatType, "en", imageSet, washroom_unit, roomUnit, prop_price, prop_size);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
 
-                                System.out.println("** adding property ********");
+                    }
 
-                                addProperty(getActivity(), user_id, contName_str, postTitle, prop_desc, address, phone_str, lat, lng,
-                                        categoryids, MainCatType, "en", imageSet,washroom_unit,roomUnit,prop_price,prop_size);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                    break;
+                case "272":
+                    try {
+                        String val = getData(getActivity().getApplicationContext(), "prop_obj", "");
+                        postOBj = new JSONObject(val);
 
-                            }
+                        String roomUnit = postOBj.getString("room_unit");
 
-                        break;
+                        String prop_desc = postOBj.getString("property_desc");
+                        String prop_price = postOBj.getString("property_price");
+                        String prop_size = postOBj.getString("prop_size");
+                        String washroom_unit = postOBj.getString("bathroom_unit");
 
-                    case "101":
+                        System.out.println("** adding property ********");
 
-                        break;
-                }
+                        addProperty(getActivity(), user_id, contName_str, postTitle, prop_desc, address, phone_str, lat, lng,
+                                categoryids, MainCatType, "en", imageSet, washroom_unit, roomUnit, prop_price, prop_size);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+
+                    }
+
+                    break;
+
+                case "101":
+                    try {
+                        String business_name = postOBj.getString("business_name");
+                        String postDes = postOBj.getString("postDes");
+                        String about_business = postOBj.getString("about_business");
+                        String social_media_link = postOBj.getString("social_media_link");
+                        String website_link = postOBj.getString("website_link");
+                        String hours_of_operation = postOBj.getString("hours_of_operation");
+                        String cat_id = postOBj.getString("category");
+                        categoryids.add(cat_id);
+
+                        NetworkClass.addBusiness(getActivity(), user_id, business_name,
+                                postDes, about_business,categoryids,address,lat,lng,MainCatType,"en",imageSet,social_media_link,website_link,hours_of_operation );
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+            }
 
         }
     }
